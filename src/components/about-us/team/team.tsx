@@ -1,8 +1,8 @@
 'use client'
 import { motion } from "framer-motion";
 
-import team1 from "../../../../public/assets/images/team/team1.avif";
-import team2 from "../../../../public/assets/images/team/team2.avif";
+import team1 from "../../../../public/assets/images/team/team1.jpg";
+import team2 from "../../../../public/assets/images/team/team2.png";
 import team3 from "../../../../public/assets/images/team/team3.jpg";
 import team4 from "../../../../public/assets/images/team/team4.jpg";
 import team5 from "../../../../public/assets/images/team/team5.jpg";
