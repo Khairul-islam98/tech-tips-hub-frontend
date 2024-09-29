@@ -1,3 +1,4 @@
+
 import {useState} from "react"
 import {
     Popover,
@@ -13,7 +14,7 @@ import {
   } from "@/components/ui/tooltip"
 
   import data from "@emoji-mart/data"
-  import Picker from "@emoji-mart/react"
+  import  Picker  from '@emoji-mart/react';
 
 
 interface EmojiPopoverProps {
