@@ -21,10 +21,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import { Home, Car, Info, Calendar, Phone, User, LogOut } from 'lucide-react';
+import {  Info, Phone, User, LogOut, NewspaperIcon } from 'lucide-react';
 import { Cross as Hamburger } from 'hamburger-react';
 import { useUser } from '@/context/user-provider';
 import { logoutUser } from '@/services/auth-services';
+import logo from '../../../../public/assets/images/logo.png';
+import Image from 'next/image';
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -36,26 +38,23 @@ const Navbar = () => {
     setIsLoading(true);
   };
 
-  console.log(user);
-  // Ensure user?.name exists before using it for the avatar fallback
-  const avatarFallback = user?.name.charAt(0).toUpperCase() 
+  const avatarFallback = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   const routes = [
-    { path: '/', name: 'Home', icon: <Home className="w-4 h-4 mr-2" /> },
-    { path: '/cars', name: 'Car list', icon: <Car className="w-4 h-4 mr-2" /> },
+    { path: '/', name: 'News Feed', icon: <NewspaperIcon className="w-4 h-4 mr-2" /> },
     { path: '/about-us', name: 'About Us', icon: <Info className="w-4 h-4 mr-2" /> },
-    { path: '/booking', name: 'Booking', icon: <Calendar className="w-4 h-4 mr-2" /> },
     { path: '/contact-us', name: 'Contact', icon: <Phone className="w-4 h-4 mr-2" /> },
   ];
 
   return (
     <div className="bg-[#481349] dark:text-white">
       <div className="max-w-screen-xl min-h-20 mx-auto flex items-center justify-between px-3">
-        {/* Logo */}
+        
         <Link href="/">
-          <div className="flex text-center items-center">
-            <p className="font-bold text-muted-foreground">
-              Car <span className="text-[#FEA633]">Rental</span>
+          <div className="flex justify-center items-center gap-2">
+            <Image src={logo} alt="logo" className="w-10 h-10" />
+            <p className="font-bold text-muted-foreground text-2xl pt-1">
+              Tech <span className="text-[#FEA633]">Hub</span>
             </p>
           </div>
         </Link>
@@ -121,7 +120,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation menu for large screens */}
-        <div className="lg:flex items-center gap-8 hidden">
+        <div className="hidden lg:flex w-full justify-center items-center gap-12">
           {routes.map((route) => (
             <Link key={route.path} href={route.path}>
               <p
@@ -136,7 +135,10 @@ const Navbar = () => {
               </p>
             </Link>
           ))}
+        </div>
 
+        {/* Login/Avatar section for large screens */}
+        <div className="hidden lg:flex items-center ml-auto">
           {!user?.email ? (
             <Link href="/login">
               <Button className="bg-[#FEA633] text-white font-bold text-2xl px-3">
@@ -148,7 +150,9 @@ const Navbar = () => {
               <DropdownMenuTrigger className="outline-none relative" asChild>
                 <Avatar className="cursor-pointer rounded-md size-10 hover:opacity-75 transition mx-auto">
                   <AvatarImage src={user?.profilePhoto} alt="User Avatar" />
-                  <AvatarFallback className="bg-sky-500 text-white rounded-md">{avatarFallback}</AvatarFallback>
+                  <AvatarFallback className="bg-sky-500 text-white rounded-md">
+                    {avatarFallback}
+                  </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
