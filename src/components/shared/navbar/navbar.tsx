@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import {  Info, Phone, User, LogOut, NewspaperIcon } from 'lucide-react';
+import {  Info, Phone, User, LogOut, NewspaperIcon, LayoutDashboardIcon } from 'lucide-react';
 import { Cross as Hamburger } from 'hamburger-react';
 import { useUser } from '@/context/user-provider';
 import { logoutUser } from '@/services/auth-services';
@@ -75,7 +75,7 @@ const Navbar = () => {
                     <SheetClose asChild key={route.path}>
                       <Link href={route.path}>
                         <p
-                          className={`flex items-center font-medium text-white hover:text-[#FEA633] uppercase p-2 border-b ${
+                          className={`flex items-center font-medium text-black hover:text-[#FEA633] uppercase p-2 border-b ${
                             pathname === route.path ? 'text-[#FEA633]' : ''
                           }`}
                         >
@@ -105,6 +105,10 @@ const Navbar = () => {
                     <DropdownMenuContent>
                       <DropdownMenuItem>
                         <User className="w-4 h-4 mr-2" />
+                        <Link href={'/profile'}>Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <LayoutDashboardIcon className="w-4 h-4 mr-2" />
                         <Link href={`/${user.role}`}>Dashboard</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={handleLogout}>
@@ -158,7 +162,12 @@ const Navbar = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <User className="w-4 h-4 mr-2" />
-                  <Link href={`/${user.role}`}>Dashboard</Link>
+                  <Link href='/profile'>Profile</Link>
+                 
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <LayoutDashboardIcon className="w-4 h-4 mr-2" />
+                <Link href={`/${user.role}`}>Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
