@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import axiosInstance from "@/lib/axios-instance";
 import { cookies } from "next/headers";
@@ -27,6 +26,22 @@ export const loginUser = async (userData: FieldValues) => {
     return data;
   } catch (error: any) {
     throw new Error(error);
+  }
+};
+export const forgetPassword = async (userData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/login", userData);
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+export const resetPassword = async (userData: any) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/reset-password", userData);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 

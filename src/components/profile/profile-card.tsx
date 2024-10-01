@@ -1,7 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUser } from "@/context/user-provider";
-import { Loader } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useUser } from "@/context/user-provider";
+import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Loader } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -11,14 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 const ProfileCard = () => {
   const { user, isLoading } = useUser();
   const [followerCount, setFollowerCount] = useState(10);
   const [followingCount, setFollowingCount] = useState(100);
 
-  // States to handle form data
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [imagePreview, setImagePreview] = useState("");

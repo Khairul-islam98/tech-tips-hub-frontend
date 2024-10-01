@@ -12,7 +12,7 @@ import {
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -27,15 +27,20 @@ import { useUser } from '@/context/user-provider';
 import { logoutUser } from '@/services/auth-services';
 import logo from '../../../../public/assets/images/logo.png';
 import Image from 'next/image';
+import { protectedRoutes } from '@/utils/constant';
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user, setIsLoading } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handleLogout = () => {
     logoutUser();
     setIsLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
   };
 
   const avatarFallback = user?.name ? user.name.charAt(0).toUpperCase() : 'U';

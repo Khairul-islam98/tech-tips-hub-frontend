@@ -19,7 +19,7 @@ const ForgetPassword = () => {
   } = useForm<{ email: string }>();
   const onSubmit: SubmitHandler<{ email: string }> = async (data) => {};
   return (
-    <div className="h-full flex items-center justify-center bg-[#5C3B58]">
+    <div className="h-full flex items-center justify-center ">
       <div className="md:h-auto md:w-[420px]">
         <Card className="w-full h-full p-8">
           <CardHeader className="px-0 pt-0 text-center">
