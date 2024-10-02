@@ -1,5 +1,4 @@
-import Quill, {type QuillOptions } from "quill";
-
+import Quill, { type QuillOptions } from "quill";
 import "quill/dist/quill.snow.css";
 import {
   MutableRefObject,
@@ -17,14 +16,26 @@ import { Delta, Op } from "quill/core";
 import { cn } from "@/lib/utils";
 import { EmojiPopover } from "./emoji-popover";
 import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 
 type EditorValue = {
+  title: string;
   images: File[] | null;
   body: string;
+  category: string;
+  isPremium: boolean;
 };
 
 interface EditorProps {
-  onSubmit: ({ images, body }: EditorValue) => void;
+  onSubmit: ({ images, body, title, category, isPremium }: EditorValue) => void;
   onCancel?: () => void;
   placeholder?: string;
   defaultValue?: Delta | Op[];
@@ -33,7 +44,9 @@ interface EditorProps {
   variant?: "create" | "update";
 }
 
-const Editor = ({
+import { Input } from "./ui/input";
+
+const PostEditor = ({
   onSubmit,
   onCancel,
   placeholder = "Write something...",
@@ -42,9 +55,12 @@ const Editor = ({
   innerRef,
   variant = "create",
 }: EditorProps) => {
+  const [title, setTitle] = useState(""); // New state for the title
   const [text, setText] = useState("");
   const [isToolbarVisible, setIsToolbarVisible] = useState(true);
   const [images, setImages] = useState<File[]>([]);
+  const [category, setCategory] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef(onSubmit);
@@ -90,7 +106,7 @@ const Editor = ({
                 if (isEmpty) return;
 
                 const body = JSON.stringify(quill.getContents());
-                submitRef.current?.({ body, images });
+                submitRef.current?.({ title, body, images, category, isPremium });
               },
             },
             shift_enter: {
@@ -158,14 +174,63 @@ const Editor = ({
   };
 
   const isEmpty = !images.length && text.trim().length === 0;
+  const isTitleValid = title !== "";
+  const isCategoryValid = category !== "";
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-[280px] md:max-w-lg">
+      {/* Title Input */}
+      <Input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Enter the title"
+        className="mb-2" 
+        disabled={disabled}
+      />
+
+      <div className="flex gap-5">
+      <div className="w-96 mb-2">
+        <Select
+          name="category"
+          onValueChange={setCategory} // Update category state on selection
+        >
+          <SelectTrigger className="col-span-3">
+            <SelectValue placeholder="Select a category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="web">Web</SelectItem>
+              <SelectItem value="software engineering">
+                Software Engineering
+              </SelectItem>
+              <SelectItem value="AI">AI</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        
+      </div>
+      {/* Premium Checkbox */}
+      <div className="mt-1">
+        <label className="inline-flex items-center text-sm">
+          <input
+            type="checkbox"
+            checked={isPremium} // Binds the checkbox state to isPremium
+            onChange={(e) => setIsPremium(e.target.checked)} // Updates isPremium based on checkbox status
+            className="mr-2"
+          />
+          Mark as Premium
+        </label>
+        
+        </div>
+      </div>
+
       <input
         type="file"
         accept="image/*"
         ref={imageElementRef}
         onChange={handleImageChange}
+      
         className="hidden"
         multiple
       />
@@ -179,7 +244,10 @@ const Editor = ({
         {!!images.length && (
           <div className="p-2 flex flex-wrap gap-2">
             {images.map((image, index) => (
-              <div key={index} className="relative size-[62px] flex items-center justify-center group/image">
+              <div
+                key={index}
+                className="relative size-[62px] flex items-center justify-center group/image"
+              >
                 <Hint label="Remove image">
                   <button
                     onClick={() => removeImage(index)}
@@ -242,8 +310,11 @@ const Editor = ({
                 disabled={disabled || isEmpty}
                 onClick={() => {
                   onSubmit({
+                    title,
                     body: JSON.stringify(quillRef.current?.getContents()),
                     images,
+                    category,
+                    isPremium
                   });
                 }}
                 size="sm"
@@ -255,18 +326,21 @@ const Editor = ({
           )}
           {variant === "create" && (
             <Button
-              className={cn(
-                "ml-auto",
-                isEmpty
-                  ? "bg-white hover:bg-white text-muted-foreground"
-                  : "bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
-              )}
+            className={cn(
+              "ml-auto",
+              isEmpty || !isTitleValid || !isCategoryValid
+                ? "bg-white hover:bg-white text-muted-foreground"
+                : "bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
+            )}
               size="iconSm"
               disabled={disabled || isEmpty}
               onClick={() => {
                 onSubmit({
+                  title,
                   body: JSON.stringify(quillRef.current?.getContents()),
                   images,
+                  category,
+                  isPremium
                 });
               }}
             >
@@ -291,4 +365,4 @@ const Editor = ({
   );
 };
 
-export default Editor;
+export default PostEditor;

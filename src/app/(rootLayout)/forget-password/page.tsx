@@ -10,14 +10,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useUserForgetPassword } from "@/hooks/auth";
 
 const ForgetPassword = () => {
+  const {mutate: forgetPassword} = useUserForgetPassword()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<{ email: string }>();
-  const onSubmit: SubmitHandler<{ email: string }> = async (data) => {};
+  const onSubmit: SubmitHandler<{ email: string }> = async (data) => {
+      try{
+        forgetPassword(data)
+      }catch(error){
+        console.log(error);
+      }
+  };
   return (
     <div className="h-full flex items-center justify-center ">
       <div className="md:h-auto md:w-[420px]">

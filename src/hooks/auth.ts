@@ -1,4 +1,5 @@
 import {
+  forgetPassword,
   loginUser,
   registerUser,
   resetPassword,
@@ -29,6 +30,18 @@ export const useUserLogin = () => {
     },
     onError: (error) => {
       toast.error(error.message);
+    },
+  });
+};
+export const useUserForgetPassword = () => {
+  return useMutation<any, Error, any>({
+    mutationKey: ["FORGET_PASSWORD"],
+    mutationFn: async (userData) => await forgetPassword(userData),
+    onSuccess: () => {
+      toast.success("Check your email for password reset link. .");
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to send forget link.");
     },
   });
 };

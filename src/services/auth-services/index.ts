@@ -30,7 +30,10 @@ export const loginUser = async (userData: FieldValues) => {
 };
 export const forgetPassword = async (userData: FieldValues) => {
   try {
-    const { data } = await axiosInstance.post("/auth/login", userData);
+    const { data } = await axiosInstance.post(
+      "/auth/forget-password",
+      userData
+    );
     return data;
   } catch (error: any) {
     throw new Error(error);

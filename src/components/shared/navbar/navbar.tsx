@@ -1,5 +1,6 @@
-'use client';
+"use client";
 
+import { useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -8,31 +9,40 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from "@/components/ui/sheet";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
-import {  Info, Phone, User, LogOut, NewspaperIcon, LayoutDashboardIcon } from 'lucide-react';
-import { Cross as Hamburger } from 'hamburger-react';
-import { useUser } from '@/context/user-provider';
-import { logoutUser } from '@/services/auth-services';
-import logo from '../../../../public/assets/images/logo.png';
-import Image from 'next/image';
-import { protectedRoutes } from '@/utils/constant';
+} from "@/components/ui/dropdown-menu";
+import {
+  Info,
+  Phone,
+  User,
+  LogOut,
+  NewspaperIcon,
+  LayoutDashboardIcon,
+  Plus,
+} from "lucide-react";
+import { Cross as Hamburger } from "hamburger-react";
+import { useUser } from "@/context/user-provider";
+import { logoutUser } from "@/services/auth-services";
+import logo from "../../../../public/assets/images/logo.png";
+import Image from "next/image";
+import { protectedRoutes } from "@/utils/constant";
+import PostModal from "@/components/post-modal";
+
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user, setIsLoading } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const [isPostModalOpen, setPostModalOpen] = useState(false); 
   const router = useRouter();
 
   const handleLogout = () => {
@@ -43,18 +53,29 @@ const Navbar = () => {
     }
   };
 
-  const avatarFallback = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
+  const avatarFallback = user?.name ? user.name.charAt(0).toUpperCase() : "U";
 
   const routes = [
-    { path: '/', name: 'News Feed', icon: <NewspaperIcon className="w-4 h-4 mr-2" /> },
-    { path: '/about-us', name: 'About Us', icon: <Info className="w-4 h-4 mr-2" /> },
-    { path: '/contact-us', name: 'Contact', icon: <Phone className="w-4 h-4 mr-2" /> },
+    {
+      path: "/",
+      name: "News Feed",
+      icon: <NewspaperIcon className="w-4 h-4 mr-2" />,
+    },
+    {
+      path: "/about-us",
+      name: "About Us",
+      icon: <Info className="w-4 h-4 mr-2" />,
+    },
+    {
+      path: "/contact-us",
+      name: "Contact",
+      icon: <Phone className="w-4 h-4 mr-2" />,
+    },
   ];
 
   return (
     <div className="bg-[#481349] dark:text-white">
       <div className="max-w-screen-xl min-h-20 mx-auto flex items-center justify-between px-3">
-        
         <Link href="/">
           <div className="flex justify-center items-center gap-2">
             <Image src={logo} alt="logo" className="w-10 h-10" />
@@ -65,11 +86,16 @@ const Navbar = () => {
         </Link>
 
         {/* Mobile device menus */}
-        <div className="block lg:hidden">
+        <div className="block md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
+              
               <Button className="text-xl font-medium bg-transparent hover:bg-transparent p-0">
-                <Hamburger toggled={isOpen} toggle={setIsOpen} color="#FEA633" />
+                <Hamburger
+                  toggled={isOpen}
+                  toggle={setIsOpen}
+                  color="#FEA633"
+                />
               </Button>
             </SheetTrigger>
             <SheetContent className="flex flex-col justify-between items-center">
@@ -81,7 +107,7 @@ const Navbar = () => {
                       <Link href={route.path}>
                         <p
                           className={`flex items-center font-medium text-black hover:text-[#FEA633] uppercase p-2 border-b ${
-                            pathname === route.path ? 'text-[#FEA633]' : ''
+                            pathname === route.path ? "text-[#FEA633]" : ""
                           }`}
                         >
                           {route.icon}
@@ -91,6 +117,14 @@ const Navbar = () => {
                     </SheetClose>
                   ))}
                 </div>
+                {user?.email && (
+                <Button
+                  onClick={() => setPostModalOpen(true)}
+                  className="bg-transparent rounded-full hover:bg-black/40  text-black"
+                >
+                  <Plus className="w-6 h-6 mr-1" /> Create Post
+                </Button>
+              )}
               </SheetHeader>
               <SheetFooter className="w-full">
                 {!user?.email ? (
@@ -101,16 +135,24 @@ const Navbar = () => {
                   </Link>
                 ) : (
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="outline-none relative" asChild>
+                    <DropdownMenuTrigger
+                      className="outline-none relative"
+                      asChild
+                    >
                       <Avatar className="cursor-pointer rounded-md size-10 hover:opacity-75 transition mx-auto">
-                        <AvatarImage src={user?.profilePhoto} alt="User Avatar" />
-                        <AvatarFallback className="bg-sky-500 text-white rounded-md">{avatarFallback}</AvatarFallback>
+                        <AvatarImage
+                          src={user?.profilePhoto}
+                          alt="User Avatar"
+                        />
+                        <AvatarFallback className="bg-sky-500 text-white rounded-md">
+                          {avatarFallback}
+                        </AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>
                         <User className="w-4 h-4 mr-2" />
-                        <Link href={'/profile'}>Profile</Link>
+                        <Link href={"/profile"}>Profile</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <LayoutDashboardIcon className="w-4 h-4 mr-2" />
@@ -129,14 +171,14 @@ const Navbar = () => {
         </div>
 
         {/* Navigation menu for large screens */}
-        <div className="hidden lg:flex w-full justify-center items-center gap-12">
+        <div className="hidden md:flex w-full justify-center items-center gap-12">
           {routes.map((route) => (
             <Link key={route.path} href={route.path}>
               <p
                 className={`flex items-center font-medium uppercase ${
                   pathname === route.path
-                    ? 'text-[#FEA633]'
-                    : 'text-white hover:text-[#FEA633]'
+                    ? "text-[#FEA633]"
+                    : "text-white hover:text-[#FEA633]"
                 }`}
               >
                 {route.icon}
@@ -146,8 +188,20 @@ const Navbar = () => {
           ))}
         </div>
 
+        {/* New Post button for large screens */}
+        <div className="hidden md:flex items-center mr-2">
+          {user?.email && (
+            <Button
+              onClick={() => setPostModalOpen(true)}
+              className="bg-transparent rounded-full hover:bg-black/40  text-white"
+            >
+              <Plus className="w-6 h-6 mr-1" /> Create Post
+            </Button>
+          )}
+        </div>
+
         {/* Login/Avatar section for large screens */}
-        <div className="hidden lg:flex items-center ml-auto">
+        <div className="hidden md:flex items-center ml-auto">
           {!user?.email ? (
             <Link href="/login">
               <Button className="bg-[#FEA633] text-white font-bold text-2xl px-3">
@@ -167,12 +221,11 @@ const Navbar = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <User className="w-4 h-4 mr-2" />
-                  <Link href='/profile'>Profile</Link>
-                 
+                  <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <LayoutDashboardIcon className="w-4 h-4 mr-2" />
-                <Link href={`/${user.role}`}>Dashboard</Link>
+                  <Link href={`/${user.role}`}>Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
@@ -183,6 +236,12 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* Post Modal */}
+      <PostModal
+        isOpen={isPostModalOpen}
+        onClose={() => setPostModalOpen(false)}
+      />
     </div>
   );
 };
