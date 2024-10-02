@@ -3,17 +3,13 @@ import axiosInstance from "@/lib/axios-instance";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
-import { redirect } from "next/navigation";
 
 export const registerUser = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/auth/register", userData);
-    if (data.success) {
-      redirect("/login");
-    }
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
@@ -23,9 +19,10 @@ export const loginUser = async (userData: FieldValues) => {
     if (data.success) {
       cookies().set("accessToken", data?.data?.accessToken);
     }
+
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 export const forgetPassword = async (userData: FieldValues) => {
@@ -36,7 +33,7 @@ export const forgetPassword = async (userData: FieldValues) => {
     );
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 export const resetPassword = async (userData: any) => {

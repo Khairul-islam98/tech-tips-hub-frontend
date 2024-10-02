@@ -6,7 +6,10 @@ import { useUser } from "@/context/user-provider";
 import axios from "axios";
 import envConfig from "@/config/env-config";
 import Quill from "quill";
-import { useCreatePost } from "@/hooks/post";
+import { useCreatePost, useGetAllPosts } from "@/hooks/post";
+import { useRouter } from "next/navigation";
+
+
 
 const PostEditor = dynamic(() => import("@/components/post-editor"), { ssr: false });
 
@@ -20,7 +23,8 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
   const [editorKey, setEditorKey] = useState(0);
   const editorRef = useRef<Quill | null>(null);
   const { user } = useUser(); 
-  const {mutate: createPost} = useCreatePost()
+  const {mutate: createPost, reset} = useCreatePost()
+  const {refetch} = useGetAllPosts()
 
 
 
@@ -100,6 +104,7 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
         onSuccess: () => {
           console.log("Post created successfully");
           setEditorKey((prevKey) => prevKey + 1);
+          refetch()
           onClose();
         },
         onError: () => {

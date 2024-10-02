@@ -9,6 +9,6 @@ export const premiumPayment = async (userData: PremiumPayment) => {
     );
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };

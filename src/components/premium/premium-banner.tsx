@@ -5,7 +5,6 @@ import Image from "next/image";
 import logo from '../../../public/assets/images/logo.png';
 import { useUser } from "@/context/user-provider";
 import { usePremiumPayment } from "@/hooks/payment";
-import { useState } from "react";
 import { toast } from "sonner";
 import Loader from "../loader";
 

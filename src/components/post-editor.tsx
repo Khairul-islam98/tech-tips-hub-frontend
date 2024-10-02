@@ -90,7 +90,7 @@ const PostEditor = ({
       modules: {
         toolbar: isToolbarVisible
           ? [
-              ["bold", "italic", "strike"],
+              ["bold", "italic", "strike", "underline"],
               ["link"],
               [{ list: "ordered" }, { list: "bullet" }],
             ]

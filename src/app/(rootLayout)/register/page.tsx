@@ -26,10 +26,15 @@ import { registrationSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
+import { useUserRegistration } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const { mutate: userRegistration, isSuccess } = useUserRegistration();
+  const router = useRouter();
+
 
   const {
     control,
@@ -42,8 +47,11 @@ const RegisterPage = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      // Handle registration logic here
-      console.log(data);
+      const userData = {
+        ...data,
+      }
+     userRegistration(userData);
+      
     } catch (err: any) {
       setError(err?.data?.message || "An error occurred during registration.");
     }
@@ -52,9 +60,12 @@ const RegisterPage = () => {
   // const handleGoogleSignIn = () => {
   //   signIn("google", { callbackUrl: "/" });
   // };
+  if(isSuccess){
+    router.push("/login")
+  }
 
   return (
-    <div className="h-full flex items-center justify-center bg-[#5C3B58]">
+    <div className="h-full flex items-center justify-center">
       <div className="md:h-auto md:w-[420px]">
         <Card className="w-full h-full p-8">
           <CardHeader className="px-0 pt-0">

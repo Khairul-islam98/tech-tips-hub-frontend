@@ -16,7 +16,11 @@ export const useUserRegistration = () => {
       toast.success("User registration successful.");
     },
     onError: (error) => {
-      toast.error(error.message);
+      if (error?.message) {
+        toast.error(error.message || "Register failed.");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     },
   });
 };
@@ -25,11 +29,16 @@ export const useUserLogin = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (userData) => await loginUser(userData),
+
     onSuccess: () => {
       toast.success("User login successful.");
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: (error: any) => {
+      if (error?.message) {
+        toast.error(error.message || "Login failed.");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     },
   });
 };

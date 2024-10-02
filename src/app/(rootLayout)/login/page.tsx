@@ -25,6 +25,7 @@ import { useUserLogin } from "@/hooks/auth";
 import Link from "next/link";
 import { useUser } from "@/context/user-provider";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
@@ -45,8 +46,12 @@ const LoginPage = () => {
     try {
       handleUserLogin(data);
       setIsLoading(true)
+      
+     
     } catch (err: any) {
+     console.log(err);
       setError(err?.data?.message || "Failed to login. Please try again.");
+      toast.error(err?.data?.message || "Failed to login. Please try again.");
     }
   };
   useEffect(() => {
@@ -59,7 +64,7 @@ const LoginPage = () => {
     }
   }, [isPending, isSuccess]);
   return (
-    <div className="h-full flex items-center justify-center bg-[#5C3B58]">
+    <div className="h-full flex items-center justify-center">
       <div className="md:h-auto md:w-[420px]">
         <Card className="w-full h-full p-8">
           <CardHeader className="px-0 pt-0">
