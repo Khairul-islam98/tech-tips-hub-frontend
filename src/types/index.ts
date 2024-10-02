@@ -5,6 +5,9 @@ export interface IUser {
   email: string;
   status: string;
   profilePhoto: string;
+  isVerified?: boolean;
+  followers?: string[];
+  following?: string[];
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
@@ -23,4 +26,10 @@ export interface IPost {
   downvotes?: number;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface PremiumPayment {
+  userId: string;
+  email: string;
+  amount: number;
 }

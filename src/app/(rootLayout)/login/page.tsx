@@ -19,17 +19,21 @@ import {
   SubmitHandler,
   FieldValues,
 } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useUserLogin } from "@/hooks/auth";
 import Link from "next/link";
 import { useUser } from "@/context/user-provider";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
   const {setIsLoading} = useUser()
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirect = searchParams.get("redirect");
   const {
     control,
     handleSubmit,
@@ -45,6 +49,15 @@ const LoginPage = () => {
       setError(err?.data?.message || "Failed to login. Please try again.");
     }
   };
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [isPending, isSuccess]);
   return (
     <div className="h-full flex items-center justify-center bg-[#5C3B58]">
       <div className="md:h-auto md:w-[420px]">
