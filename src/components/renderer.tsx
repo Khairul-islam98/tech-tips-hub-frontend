@@ -6,7 +6,7 @@ interface RendererProps {
   maxLength?: number; // Optional maxLength prop
 }
 
-const Renderer = ({ value, maxLength = 100 }: RendererProps) => {
+const Renderer = ({ value, maxLength }: RendererProps) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const rendererRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +32,7 @@ const Renderer = ({ value, maxLength = 100 }: RendererProps) => {
     setIsEmpty(isDocEmpty);
 
     // If the document is not empty, truncate the Delta content to respect maxLength
-    if (!isDocEmpty && plainText.length > maxLength) {
+    if (!isDocEmpty && maxLength !== undefined && plainText.length > maxLength) {
       const truncatedDelta = quill.getContents(0, maxLength); // Get Delta for first `maxLength` characters
       quill.setContents(truncatedDelta); // Replace with truncated Delta
       quill.clipboard.dangerouslyPasteHTML(maxLength, '...'); // Append "..." if truncated

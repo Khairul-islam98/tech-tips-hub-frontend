@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Quill, { type QuillOptions } from "quill";
 import "quill/dist/quill.snow.css";
 import {

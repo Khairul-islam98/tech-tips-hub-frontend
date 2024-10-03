@@ -118,7 +118,7 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-auto mx-auto justify-center">
+      <DialogContent className="w-full mx-auto justify-center max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create Post</DialogTitle>
         </DialogHeader>

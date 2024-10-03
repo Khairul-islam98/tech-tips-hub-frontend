@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from "@/lib/axios-instance";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
