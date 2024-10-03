@@ -1,4 +1,8 @@
-import { createPost, getAllPosts } from "@/services/post-services";
+import {
+  createPost,
+  getAllPosts,
+  getSinglePost,
+} from "@/services/post-services";
 import { IPost } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -20,5 +24,12 @@ export const useGetAllPosts = () => {
   return useQuery({
     queryKey: ["GET_ALL_POSTS"],
     queryFn: async () => await getAllPosts(),
+  });
+};
+
+export const useGetSinglePost = (postId: any) => {
+  return useQuery({
+    queryKey: ["GET_SINGLE_POST", postId],
+    queryFn: async () => await getSinglePost(postId),
   });
 };

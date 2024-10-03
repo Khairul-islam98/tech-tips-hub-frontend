@@ -33,3 +33,10 @@ export interface PremiumPayment {
   email: string;
   amount: number;
 }
+
+export interface IComment {
+  _id?: string;
+  postId: string;
+  userId: string;
+  content: string;
+}

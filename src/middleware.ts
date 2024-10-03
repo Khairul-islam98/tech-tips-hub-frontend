@@ -4,7 +4,7 @@ import { getCurrentUser } from "./services/auth-services";
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const authRoutes = ["/login", "/register"];
-const privateRoute = ["/profile"];
+const privateRoute = [/^\/profile$/, /^\/post-details(\/.*)?$/];
 
 const roleBasedPrivateRoutes = {
   user: [/^\/user/],
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
       );
     }
   }
-  if (user && privateRoute.includes(pathname)) {
+  if (privateRoute.some((route) => pathname.match(route))) {
     return NextResponse.next();
   }
 
@@ -37,5 +37,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile", "/login", "/register", "/user/:page*", "/admin/:page*"],
+  matcher: [
+    "/profile",
+    "/login",
+    "/register",
+    "/post-details",
+    "/user/:page*",
+    "/admin/:page*",
+    "/post-details/:postId*",
+  ],
 };

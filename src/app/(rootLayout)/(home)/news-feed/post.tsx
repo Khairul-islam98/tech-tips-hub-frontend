@@ -2,12 +2,14 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { useGetAllPosts } from "@/hooks/post"; // Custom hook to fetch posts
-import { Thumbnail } from "../thumbnail"; // Thumbnail component for displaying images
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import dynamic from "next/dynamic";
-import { Button } from "../ui/button";
+
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Thumbnail } from "@/components/thumbnail";
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
 const PostCard = () => {
@@ -24,7 +26,7 @@ const PostCard = () => {
     <div className="bg-gray-800 text-white max-w-3xl mx-auto rounded-lg shadow-lg p-4 space-y-8 group relative w-full  bg-white/20  shadow-black/5 ring-[0.8px] ring-black/5">
         <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 opacity-[0.15] blur-lg"></div>
         <div className="relative space-y-5 rounded-[0.62rem] shadow-sm shadow-black/5 ring-[0.8px] ring-black/5 ">
-      {data?.data.map((post) => (
+      {data?.data.map((post: any) => (
         <div
           key={post._id}
           className="bg-white text-black p-6 rounded-lg shadow-md transition duration-200 hover:-translate-y-1"
@@ -52,7 +54,7 @@ const PostCard = () => {
               Follow
             </Button>
           </div>
-          <Link href={`/posts/${post._id}`}>
+          <Link href={`/post-details/${post._id}`}>
 
           {/* Post Title */}
           <p className="mb-4 text-xl font-semibold">{post.title}</p>
@@ -65,7 +67,7 @@ const PostCard = () => {
      
           {/* Post Images */}
           <div className="space-y-4 mb-4">
-            {post.images?.map((imageUrl, index) => (
+            {post.images?.map((imageUrl: any, index: any) => (
               <Thumbnail key={index} url={imageUrl} />
             ))}
           </div>
@@ -86,6 +88,7 @@ const PostCard = () => {
               </div>
 
               {/* Comments */}
+              <Link href={`/post-details/${post._id}`}>
               <div className="flex items-center space-x-2 bg-gray-700 p-2 rounded-full hover:bg-gray-600">
                 <svg
                   aria-hidden="true"
@@ -103,6 +106,7 @@ const PostCard = () => {
                   {Array.isArray(post.comments) ? post.comments.length : 0}
                 </span>
               </div>
+                </Link>
 
               {/* Share */}
               <button className="flex items-center space-x-2 bg-gray-700 p-2 rounded-full hover:bg-gray-600">

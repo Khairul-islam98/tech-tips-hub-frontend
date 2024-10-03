@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -26,12 +26,14 @@ import Link from "next/link";
 import { useUser } from "@/context/user-provider";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import React, { Suspense } from "react";
+import Loader from "@/components/loader";
 
-const LoginPage = () => {
+const LoginPageContent = () => {
   const [error, setError] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
-  const {setIsLoading} = useUser()
+  const { setIsLoading } = useUser();
   const searchParams = useSearchParams();
   const router = useRouter();
   const redirect = searchParams.get("redirect");
@@ -42,18 +44,18 @@ const LoginPage = () => {
   } = useForm({
     mode: "onChange",
   });
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       handleUserLogin(data);
-      setIsLoading(true)
-      
-     
+      setIsLoading(true);
     } catch (err: any) {
-     console.log(err);
+      console.log(err);
       setError(err?.data?.message || "Failed to login. Please try again.");
       toast.error(err?.data?.message || "Failed to login. Please try again.");
     }
   };
+
   useEffect(() => {
     if (!isPending && isSuccess) {
       if (redirect) {
@@ -63,6 +65,7 @@ const LoginPage = () => {
       }
     }
   }, [isPending, isSuccess]);
+
   return (
     <div className="h-full flex items-center justify-center">
       <div className="md:h-auto md:w-[420px]">
@@ -127,7 +130,7 @@ const LoginPage = () => {
                     {errors.password.message}
                   </p>
                 )}
-              
+
               <Button type="submit" className="w-full" size="lg">
                 Continue
               </Button>
@@ -178,6 +181,14 @@ const LoginPage = () => {
         </Card>
       </div>
     </div>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<div><Loader /> </div>}>
+      <LoginPageContent />
+    </Suspense>
   );
 };
 
