@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { MdSend, MdDelete, MdEdit, MdClose } from "react-icons/md"; // Added MdClose icon
 import { RefObject, useState } from "react";
-import { useDeleteComment, useEditComment } from "@/hooks/comment";
+import { useDeleteComment, useEditComment } from "@/hooks/comment-hook";
 import { Button } from "@/components/ui/button";
 
 interface CommentProps {

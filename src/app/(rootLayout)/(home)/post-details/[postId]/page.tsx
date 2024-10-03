@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input"; // Import the input component fro
 import { Thumbnail } from "@/components/thumbnail";
 import dynamic from "next/dynamic";
 
-import { useGetSinglePost } from "@/hooks/post";
+import { useGetSinglePost } from "@/hooks/post-hook";
 import { useParams } from "next/navigation";
 import { useState, useRef } from "react";
 import { IComment } from "@/types";
-import { useCreateComment, useDeleteComment, useEditComment, useGetComment } from "@/hooks/comment";
+import { useCreateComment, useDeleteComment, useEditComment, useGetComment } from "@/hooks/comment-hook";
 import { useUser } from "@/context/user-provider";
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";

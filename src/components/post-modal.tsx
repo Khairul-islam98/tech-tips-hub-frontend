@@ -6,7 +6,7 @@ import { useUser } from "@/context/user-provider";
 import axios from "axios";
 import envConfig from "@/config/env-config";
 import Quill from "quill";
-import { useCreatePost, useGetAllPosts } from "@/hooks/post";
+import { useCreatePost, useGetAllPosts } from "@/hooks/post-hook";
 import { useRouter } from "next/navigation";
 
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Image from "next/image";
-import { useGetAllPosts } from "@/hooks/post"; // Custom hook to fetch posts
+import { useGetAllPosts } from "@/hooks/post-hook"; // Custom hook to fetch posts
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
