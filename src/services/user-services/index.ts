@@ -49,7 +49,7 @@ export const createFollow = async ({
 // Unfollow API call
 export const createUnfollow = async ({
   userId,
-  targetId, // Renamed to targetId
+  targetId,
 }: {
   userId: string;
   targetId: string;
@@ -57,7 +57,7 @@ export const createUnfollow = async ({
   try {
     const { data } = await axiosInstance.post("/users/unfollow", {
       userId,
-      targetId, // Make sure this matches the API
+      targetId,
     });
     console.log(data);
     return data;

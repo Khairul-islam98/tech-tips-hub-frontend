@@ -26,3 +26,35 @@ export const getSinglePost = async (postId: any) => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const createPostUpvote = async (
+  postId: string,
+  userId: string,
+  cancel = false
+) => {
+  try {
+    const { data } = await axiosInstance.post(`/posts/${postId}/upvote`, {
+      userId,
+      cancel, // Pass the cancel flag to indicate if it's a cancellation
+    });
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export const createPostDownvote = async (
+  postId: string,
+  userId: string,
+  cancel = false
+) => {
+  try {
+    const { data } = await axiosInstance.post(`/posts/${postId}/downvote`, {
+      userId,
+      cancel, // Pass the cancel flag to indicate if it's a cancellation
+    });
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
