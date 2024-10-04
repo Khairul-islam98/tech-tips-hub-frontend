@@ -1,8 +1,9 @@
 "use client";
 import ProfileCard from "@/app/(rootLayout)/profile/components/profile/profile-card";
 import { useState } from "react";
-import { ProfilePost } from "./components/posts/profile-post";
 import { Followers } from "./components/followers/followers";
+import { Following } from "./components/following/following";
+import { UserPost } from "./components/user-post/user-post";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("posts");
@@ -38,10 +39,10 @@ const ProfilePage = () => {
       </div>
 
       {/* Conditional rendering of content based on active tab */}
-      {/* {activeTab === 'profile' && <ProfileEditForm />} */}
-      {activeTab === 'posts' && <ProfilePost />}
+     
+      {activeTab === 'posts' && <UserPost />}
       {activeTab === 'followers' && <Followers />}
-      {/* {activeTab === 'following' && <FollowingList userId={user?._id} />} */}
+      {activeTab === 'following' && <Following />}
     </div>
   );
 };

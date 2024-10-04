@@ -16,6 +16,7 @@ import axios from "axios";
 import { useGetMyProfile, useUpdateProfile } from "@/hooks/user-hook";
 import envConfig from "@/config/env-config";
 import { toast } from "sonner";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 
 const ProfileCard = () => {
   const { user, isLoading } = useUser();
@@ -119,31 +120,49 @@ const ProfileCard = () => {
     <>
       <div className="flex flex-col md:flex-row items-center md:justify-between mb-6 w-full">
         <div className="flex flex-col sm:flex-row items-center mb-4 md:mb-0 w-full sm:w-auto">
-          <Avatar className="w-28 h-28">
-            <AvatarImage
-              src={userData?.data.profilePhoto || ""}
-              alt="User Avatar"
-              className="rounded-full border-4 border-white cursor-pointer"
-            />
-            <AvatarFallback className="bg-sky-500 text-white rounded-full">
-              {avatarFallback}
-            </AvatarFallback>
-          </Avatar>
+          <motion.div
+            whileHover={{ scale: 1.1 }} // Scale up on hover
+            transition={{ duration: 0.3 }}
+            className="w-28 h-28"
+          >
+            <Avatar className="w-full h-full">
+              <AvatarImage
+                src={userData?.data?.profilePhoto || ""}
+                alt="User Avatar"
+                className="rounded-full border-4 border-white cursor-pointer"
+              />
+              <AvatarFallback className="bg-sky-500 text-white rounded-full">
+                {avatarFallback}
+              </AvatarFallback>
+            </Avatar>
+          </motion.div>
           <div className="ml-0 sm:ml-4 text-center sm:text-left mt-4 sm:mt-0">
-            <p className="text-2xl font-semibold">
-              {userData?.data.name || "User Name"}
-            </p>
-            <p className="text-gray-600">{userData?.data.email || "user@example.com"}</p>
+            <motion.p
+              initial={{ opacity: 0 }} // Fade in effect
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-semibold"
+            >
+              {userData?.data?.name || "User Name"}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }} // Fade in effect
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-gray-600"
+            >
+              {userData?.data?.email || "user@example.com"}
+            </motion.p>
           </div>
         </div>
 
         <div className="flex gap-8 items-center justify-center md:justify-end w-full sm:w-auto">
           <div className="text-center">
-            <p className="font-semibold">{userData?.data.followers?.length}</p>
+            <p className="font-semibold">{userData?.data?.followers?.length}</p>
             <p className="text-gray-500">Followers</p>
           </div>
           <div className="text-center">
-            <p className="font-semibold">{userData?.data.following?.length}</p>
+            <p className="font-semibold">{userData?.data?.following?.length}</p>
             <p className="text-gray-500">Following</p>
           </div>
         </div>
@@ -160,7 +179,7 @@ const ProfileCard = () => {
               <div>
                 <div className="mt-2 flex justify-center items-center mx-auto">
                   <Image
-                    src={imagePreview || userData?.data.profilePhoto || ""}
+                    src={imagePreview || userData?.data?.profilePhoto || ""}
                     width={124}
                     height={124}
                     alt="Image Preview"
