@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "@/context/user-provider";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader } from "lucide-react";
+import { Loader } from "lucide-react"; 
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,8 @@ import axios from "axios";
 import { useGetMyProfile, useUpdateProfile } from "@/hooks/user-hook";
 import envConfig from "@/config/env-config";
 import { toast } from "sonner";
-import { motion } from "framer-motion"; // Import motion from framer-motion
+import { motion } from "framer-motion"; 
+import { CheckCircle, Facebook } from "lucide-react"; // Import necessary icons
 
 const ProfileCard = () => {
   const { user, isLoading } = useUser();
@@ -141,9 +142,11 @@ const ProfileCard = () => {
               initial={{ opacity: 0 }} // Fade in effect
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="text-2xl font-semibold"
+              className="text-2xl font-semibold flex items-center"
             >
               {userData?.data?.name || "User Name"}
+              {userData?.data?.isVerified === true ? <CheckCircle className="ml-2 text-green-500" size={20} /> : null}
+              
             </motion.p>
             <motion.p
               initial={{ opacity: 0 }} // Fade in effect
@@ -153,6 +156,7 @@ const ProfileCard = () => {
             >
               {userData?.data?.email || "user@example.com"}
             </motion.p>
+           
           </div>
         </div>
 

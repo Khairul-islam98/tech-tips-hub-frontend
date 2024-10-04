@@ -32,6 +32,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { VoteButton } from "../components/vote-button";
+import { CheckCircle } from "lucide-react";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -115,8 +116,9 @@ const PostCard = () => {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-bold">
+                    <p className="font-bold flex">
                       {post.authorId?.name || "Unknown Author"}
+                      {post.authorId?.isVerified === true ?   <CheckCircle className="ml-1 text-green-500 text-center mt-1.5" size={12} /> : null}
                     </p>
                     <p className="text-gray-400 text-sm">
                       {new Date(post.createdAt).toLocaleDateString()}

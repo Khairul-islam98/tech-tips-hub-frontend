@@ -36,6 +36,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import DetailsVoteButton from "./details-vote-button";
+import { CheckCircle } from "lucide-react";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -121,8 +122,9 @@ const PostDetails = () => {
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-bold text-xl">
-                {post.data.authorId?.name || "Unknown Author"}
+              <p className="font-bold text-xl flex">
+                {post?.data?.authorId?.name || "Unknown Author"}
+                {post?.data?.authorId?.isVerified === true ?   <CheckCircle className="ml-1 text-green-500 text-center mt-1.5" size={16} /> : null}
               </p>
               <p className="text-gray-500 text-sm">
                 {new Date(post?.data?.createdAt).toLocaleDateString()} |{" "}
@@ -255,20 +257,20 @@ const PostDetails = () => {
                         <div className="flex space-x-4 mx-auto">
                           {/* Social Share Buttons */}
                           <FacebookShareButton
-                            url={`https://yourwebsite.com/posts/${post?._id}`}
+                            url={`https://tech-tips-hub.vercel.app/post-details/${post?._id}`}
                           >
                             <FacebookIcon size={40} round />
                           </FacebookShareButton>
 
                           <TwitterShareButton
-                            url={`https://yourwebsite.com/posts/${post?._id}`}
+                            url={`https://tech-tips-hub.vercel.app/post-details/${post?._id}`}
                             title={post.title}
                           >
                             <TwitterIcon size={40} round />
                           </TwitterShareButton>
 
                           <LinkedinShareButton
-                            url={`https://yourwebsite.com/posts/${post?._id}`}
+                            url={`https://tech-tips-hub.vercel.app/post-details/${post?._id}`}
                             title={post.title}
                             summary={post.content}
                             source="YourWebsite"
@@ -277,7 +279,7 @@ const PostDetails = () => {
                           </LinkedinShareButton>
 
                           <WhatsappShareButton
-                            url={`https://yourwebsite.com/posts/${post?._id}`}
+                            url={`https://tech-tips-hub.vercel.app/post-details/${post?._id}`}
                             title={post.title}
                             separator=":: "
                           >
