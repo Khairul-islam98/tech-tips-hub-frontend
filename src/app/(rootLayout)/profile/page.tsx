@@ -2,6 +2,7 @@
 import ProfileCard from "@/app/(rootLayout)/profile/components/profile/profile-card";
 import { useState } from "react";
 import { ProfilePost } from "./components/posts/profile-post";
+import { Followers } from "./components/followers/followers";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("posts");
@@ -39,7 +40,7 @@ const ProfilePage = () => {
       {/* Conditional rendering of content based on active tab */}
       {/* {activeTab === 'profile' && <ProfileEditForm />} */}
       {activeTab === 'posts' && <ProfilePost />}
-      {/* {activeTab === 'followers' && <FollowersList userId={user?._id} />} */}
+      {activeTab === 'followers' && <Followers />}
       {/* {activeTab === 'following' && <FollowingList userId={user?._id} />} */}
     </div>
   );
