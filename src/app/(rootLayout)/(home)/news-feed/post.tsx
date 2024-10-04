@@ -47,9 +47,9 @@ const PostCard = () => {
   const followMutation = useUserFollow();
   const unfollowMutation = useUserUnfollow();
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   const toggleShareOptions = (postId: string) => {
     if (openSharePostId === postId) {
@@ -62,13 +62,15 @@ const PostCard = () => {
 
   if (isLoading) return <Loader />;
 
+
+
   
 
   return (
     <div className="bg-gray-800 text-white max-w-3xl mx-auto rounded-lg shadow-lg p-4 space-y-8 group relative w-full bg-white/20 shadow-black/5 ring-[0.8px] ring-black/5">
       <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 opacity-[0.15] blur-lg"></div>
       <div className="relative space-y-5 rounded-[0.62rem] shadow-sm shadow-black/5 ring-[0.8px] ring-black/5">
-        {data?.data.map((post: any) => {
+        {data?.data?.map((post: any) => {
           const authorUserId = post.authorId?._id;
           const userIdforFollow = userData?.data?._id;
 

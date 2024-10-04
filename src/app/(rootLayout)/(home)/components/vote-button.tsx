@@ -13,23 +13,32 @@ interface PostProps {
 export const VoteButton = ({ post }: { post: PostProps }) => {
   const { user } = useUser();
   const { data: userData } = useGetMyProfile(user?.email);
-  const { mutate: upvotes } = useCreateUpvote();
-  const { mutate: downvotes } = useCreateDownvote();
-  const router = useRouter()
+  const { mutate: upvoteMutation } = useCreateUpvote();
+  const { mutate: downvoteMutation } = useCreateDownvote();
+  const router = useRouter();
 
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [hasDownvoted, setHasDownvoted] = useState(false);
 
   const [voteCount, setVoteCount] = useState({
-    upvotes: post?.upvotes?.length,
-    downvotes: post?.downvotes?.length,
+    upvotes: post?.upvotes?.length || 0,
+    downvotes: post?.downvotes?.length || 0,
   });
 
   useEffect(() => {
-    
-    setHasUpvoted(post?.upvotes?.includes(userData?.data?._id));
-    setHasDownvoted(post?.downvotes?.includes(userData?.data?._id));
+    if (userData?.data?._id) {
+      setHasUpvoted(post?.upvotes?.includes(userData.data._id));
+      setHasDownvoted(post?.downvotes?.includes(userData.data._id));
+    }
   }, [post, userData?.data?._id]);
+
+
+  useEffect(() => {
+    setVoteCount({
+      upvotes: post?.upvotes?.length || 0,
+      downvotes: post?.downvotes?.length || 0,
+    });
+  }, [post]);
 
   const handleUpvote = () => {
     if (!user) {
@@ -37,80 +46,100 @@ export const VoteButton = ({ post }: { post: PostProps }) => {
       router.push("/login");
       return;
     }
-    if (hasUpvoted) {
-      // If already upvoted, cancel the upvote
-      upvotes({ postId: post._id, userId: userData.data._id, cancel: true }, {
-        onSuccess: () => {
-          setVoteCount((prev) => ({
-            ...prev,
-            upvotes: prev.upvotes - 1,
-          }));
-          setHasUpvoted(false);
-        },
-        onError: (error) => {
-          console.error("Cancel upvote error:", error.message);
-        },
-      });
-    } else {
-      // Otherwise, perform the upvote
-      upvotes({ postId: post._id, userId: userData.data._id }, {
-        onSuccess: () => {
-          setVoteCount((prev) => ({
-            ...prev,
-            upvotes: prev.upvotes + 1,
-          }));
-          setHasUpvoted(true);
-          if (hasDownvoted) {
-            setVoteCount((prev) => ({
-              ...prev,
-              downvotes: prev.downvotes - 1,
-            }));
-            setHasDownvoted(false);
-          }
-        },
-        onError: (error) => {
-          console.error("Upvote error:", error.message);
-        },
-      });
-    }
-  };
 
-  const handleDownvote = () => {
-    if (hasDownvoted) {
-      // If already downvoted, cancel the downvote
-      downvotes({ postId: post._id, userId: userData.data._id, cancel: true }, {
-        onSuccess: () => {
-          setVoteCount((prev) => ({
-            ...prev,
-            downvotes: prev.downvotes - 1,
-          }));
-          setHasDownvoted(false);
-        },
-        onError: (error) => {
-          console.error("Cancel downvote error:", error.message);
-        },
-      });
-    } else {
-      // Otherwise, perform the downvote
-      downvotes({ postId: post._id, userId: userData.data._id }, {
-        onSuccess: () => {
-          setVoteCount((prev) => ({
-            ...prev,
-            downvotes: prev.downvotes + 1,
-          }));
-          setHasDownvoted(true);
-          if (hasUpvoted) {
+    if (hasUpvoted) {
+      // Cancel the upvote
+      upvoteMutation(
+        { postId: post._id, userId: userData.data._id, cancel: true },
+        {
+          onSuccess: () => {
             setVoteCount((prev) => ({
               ...prev,
               upvotes: prev.upvotes - 1,
             }));
             setHasUpvoted(false);
-          }
-        },
-        onError: (error) => {
-          console.error("Downvote error:", error.message);
-        },
-      });
+          },
+          onError: (error) => {
+            console.error("Cancel upvote error:", error.message);
+          },
+        }
+      );
+    } else {
+      // Add an upvote
+      upvoteMutation(
+        { postId: post._id, userId: userData.data._id },
+        {
+          onSuccess: () => {
+            setVoteCount((prev) => ({
+              ...prev,
+              upvotes: prev.upvotes + 1,
+            }));
+            setHasUpvoted(true);
+            if (hasDownvoted) {
+              // Remove downvote if exists
+              setVoteCount((prev) => ({
+                ...prev,
+                downvotes: prev.downvotes - 1,
+              }));
+              setHasDownvoted(false);
+            }
+          },
+          onError: (error) => {
+            console.error("Upvote error:", error.message);
+          },
+        }
+      );
+    }
+  };
+
+  const handleDownvote = () => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    if (hasDownvoted) {
+      // Cancel the downvote
+      downvoteMutation(
+        { postId: post._id, userId: userData.data._id, cancel: true },
+        {
+          onSuccess: () => {
+            setVoteCount((prev) => ({
+              ...prev,
+              downvotes: prev.downvotes - 1,
+            }));
+            setHasDownvoted(false);
+          },
+          onError: (error) => {
+            console.error("Cancel downvote error:", error.message);
+          },
+        }
+      );
+    } else {
+      // Add a downvote
+      downvoteMutation(
+        { postId: post._id, userId: userData.data._id },
+        {
+          onSuccess: () => {
+            setVoteCount((prev) => ({
+              ...prev,
+              downvotes: prev.downvotes + 1,
+            }));
+            setHasDownvoted(true);
+            if (hasUpvoted) {
+              // Remove upvote if exists
+              setVoteCount((prev) => ({
+                ...prev,
+                upvotes: prev.upvotes - 1,
+              }));
+              setHasUpvoted(false);
+            }
+          },
+          onError: (error) => {
+            console.error("Downvote error:", error.message);
+          },
+        }
+      );
     }
   };
 
@@ -120,7 +149,6 @@ export const VoteButton = ({ post }: { post: PostProps }) => {
         onClick={handleUpvote}
         className={`hover:text-red-400 ${hasUpvoted ? "text-red-400" : ""}`}
       >
-        {/* Upvote icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.2rem"
@@ -138,7 +166,6 @@ export const VoteButton = ({ post }: { post: PostProps }) => {
         onClick={handleDownvote}
         className={`hover:text-[#564FC4] ${hasDownvoted ? "text-[#564FC4]" : ""}`}
       >
-        {/* Downvote icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.2rem"

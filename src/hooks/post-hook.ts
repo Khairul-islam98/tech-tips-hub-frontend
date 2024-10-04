@@ -3,6 +3,7 @@ import {
   createPostDownvote,
   createPostUpvote,
   getAllPosts,
+  getMyPost,
   getSinglePost,
 } from "@/services/post-services";
 import { IPost } from "@/types";
@@ -33,6 +34,12 @@ export const useGetSinglePost = (postId: any) => {
   return useQuery({
     queryKey: ["GET_SINGLE_POST", postId],
     queryFn: async () => await getSinglePost(postId),
+  });
+};
+export const useGetMyPost = (email: any) => {
+  return useQuery({
+    queryKey: ["GET_MY_POST", email],
+    queryFn: async () => await getMyPost(email),
   });
 };
 

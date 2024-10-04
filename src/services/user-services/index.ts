@@ -21,15 +21,9 @@ export const updateProfile = async (email: string, userData: string) => {
   }
 };
 
-interface UserId {
-  userId: string; // Adjust based on your API requirements
-}
-
-// Function to create follow
-// Adjust these to use `targetId` as expected by the API
 export const createFollow = async ({
   userId,
-  targetId, // Renamed to targetId
+  targetId,
 }: {
   userId: string;
   targetId: string;
@@ -37,7 +31,7 @@ export const createFollow = async ({
   try {
     const { data } = await axiosInstance.post("/users/follow", {
       userId,
-      targetId, // Make sure this matches the API
+      targetId,
     });
     console.log(data);
     return data;
