@@ -4,7 +4,13 @@ import { useGetMyProfile } from "@/hooks/user-hook";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-export const VoteButton = ({ post }) => {
+interface PostProps {
+  _id: string;
+  upvotes: string[];
+  downvotes: string[];
+}
+
+export const VoteButton = ({ post }: { post: PostProps }) => {
   const { user } = useUser();
   const { data: userData } = useGetMyProfile(user?.email);
   const { mutate: upvotes } = useCreateUpvote();

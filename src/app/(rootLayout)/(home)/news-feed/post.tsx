@@ -207,7 +207,7 @@ const PostCard = () => {
                           <span>
                             {openSharePostId === post._id
                               ? "Hide Share Options"
-                              : "Share Post"}
+                              : "Share"}
                           </span>
                         </button>
                       </DialogTrigger>

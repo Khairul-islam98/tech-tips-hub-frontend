@@ -35,6 +35,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import DetailsVoteButton from "./details-vote-button";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -193,40 +194,12 @@ const PostDetails = () => {
         <div className="flex justify-between items-center mt-6">
           <div className="flex items-center space-x-4 text-gray-500">
             {/* Upvote/Downvote */}
-            <div className="flex items-center space-x-2 bg-gray-200 p-2 rounded-full hover:bg-gray-300">
-              <button className="hover:text-red-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.2rem"
-                  height="1.2rem"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601L17.919 12z"
-                  />
-                </svg>
-              </button>
-              <span>{post.upvotes}</span>
-              <button className="hover:text-[#564FC4]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.2rem"
-                  height="1.2rem"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M20.901 10.566A1 1 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059M12 19.399L6.081 12H10V4h4v8h3.919z"
-                  />
-                </svg>
-              </button>
-            </div>
 
+             <DetailsVoteButton post={post.data} />
             {/* Comments */}
             <div
               className="flex items-center space-x-2 bg-gray-200 p-2 rounded-full hover:bg-gray-300 cursor-pointer"
-              onClick={handleCommentIconClick} // Scroll to input field when clicked
+              onClick={handleCommentIconClick} 
             >
               <svg
                 aria-hidden="true"
@@ -269,7 +242,7 @@ const PostDetails = () => {
                           <span>
                             {openSharePostId === post._id
                               ? "Hide Share Options"
-                              : "Share Post"}
+                              : "Share"}
                           </span>
                         </button>
                       </DialogTrigger>
