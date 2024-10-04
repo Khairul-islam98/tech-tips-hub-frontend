@@ -1,4 +1,10 @@
-import { getMyProfile, updateProfile } from "@/services/user-services";
+import {
+  createFollow,
+  createUnfollow,
+  getMyProfile,
+  updateProfile,
+} from "@/services/user-services";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -24,6 +30,34 @@ export const useUpdateProfile = () => {
     },
     onSuccess: () => {
       toast.success("Profile updated successfully.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useUserFollow = () => {
+  return useMutation<any, Error, { userId: string; targetId: string }>({
+    mutationKey: ["CREATE_FOLLOW"],
+    mutationFn: async ({ userId, targetId }) =>
+      await createFollow({ userId, targetId }),
+    onSuccess: () => {
+      toast.success("Followed successfully.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+// Hook to unfollow a user
+export const useUserUnfollow = () => {
+  return useMutation<any, Error, { userId: string; targetId: string }>({
+    mutationKey: ["CREATE_UNFOLLOW"],
+    mutationFn: async ({ userId, targetId }) =>
+      await createUnfollow({ userId, targetId }),
+    onSuccess: () => {
+      toast.success("Unfollowed successfully.");
     },
     onError: (error) => {
       toast.error(error.message);

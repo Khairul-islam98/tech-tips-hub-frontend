@@ -19,18 +19,19 @@ import { toast } from "sonner";
 
 const ProfileCard = () => {
   const { user, isLoading } = useUser();
-  const {data: userData, refetch} = useGetMyProfile(user?.email);
-  const {mutate: updateProfile} = useUpdateProfile()
+  const { data: userData, refetch } = useGetMyProfile(user?.email);
+  const { mutate: updateProfile } = useUpdateProfile();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [imagePreview, setImagePreview] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false); 
 
   useEffect(() => {
     if (userData) {
       setName(userData?.data?.name || "");
       setEmail(userData?.data?.email || "");
-      setImagePreview(userData?.data?.profilePhoto || ""); 
+      setImagePreview(userData?.data?.profilePhoto || "");
     }
   }, [userData]);
 
@@ -40,40 +41,6 @@ const ProfileCard = () => {
     );
 
   const avatarFallback = userData?.data?.name?.charAt(0).toUpperCase() || "U";
-
-  // const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //       formData.append("upload_preset", envConfig.uploadPreset);
-      
-  //       formData.append("cloud_name", envConfig.cloudName);
-
-  //     try {
-  //       const response = await axios.post(
-  //         `https://api.cloudinary.com/v1_1/${envConfig.cloudName}/image/upload`,
-  //         formData,
-  //         {
-  //           headers: { "Content-Type": "multipart/form-data" },
-  //           onUploadProgress: (progressEvent) => {
-  //             const percentCompleted = Math.round(
-  //               (progressEvent.loaded * 100) / (progressEvent.total || 1)
-  //             );
-  //             console.log(`Upload progress: ${percentCompleted}%`);
-  //           },
-  //         }
-  //       );
-  //       const imageUrl = response.data.secure_url;
-  //       setImagePreview(imageUrl);
-  //       toast.success("Image uploaded successfully");
-  //     } catch (error) {
-  //       console.error("Image upload failed:", error);
-  //       toast.error("Image upload failed");
-  //     }
-  //   }
-  // };
-
 
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
@@ -89,9 +56,8 @@ const ProfileCard = () => {
   const handleSave = async () => {
     try {
       let imageUrl = imagePreview;
-  
+
       if (imagePreview && imagePreview !== userData?.data?.profilePhoto) {
-       
         const formData = new FormData();
         const fileInput = document.getElementById("fileInput") as HTMLInputElement;
         const file = fileInput?.files?.[0];
@@ -107,7 +73,7 @@ const ProfileCard = () => {
           } else {
             throw new Error("Cloud name is not defined");
           }
-  
+
           const response = await axios.post(
             `https://api.cloudinary.com/v1_1/${envConfig.cloudName}/image/upload`,
             formData,
@@ -118,14 +84,12 @@ const ProfileCard = () => {
           imageUrl = response.data.secure_url;
         }
       }
-  
 
       const updateData = {
         name,
         email,
-        profilePhoto: imageUrl, 
+        profilePhoto: imageUrl,
       };
-  
 
       if (userData) {
         const email = userData?.data?.email;
@@ -134,7 +98,8 @@ const ProfileCard = () => {
             { email, userData: updateData },
             {
               onSuccess: () => {
-                refetch(); 
+                refetch();
+                setIsDialogOpen(false); 
               },
             }
           );
@@ -149,19 +114,16 @@ const ProfileCard = () => {
       toast.error("Failed to save profile");
     }
   };
-  
-  
+
   return (
     <>
       <div className="flex flex-col md:flex-row items-center md:justify-between mb-6 w-full">
-        {/* Avatar and user info */}
         <div className="flex flex-col sm:flex-row items-center mb-4 md:mb-0 w-full sm:w-auto">
           <Avatar className="w-28 h-28">
             <AvatarImage
-              src={userData?.data.profilePhoto || ""} 
+              src={userData?.data.profilePhoto || ""}
               alt="User Avatar"
-              className="rounded-full border-4 border-white cursor-pointer" 
-             
+              className="rounded-full border-4 border-white cursor-pointer"
             />
             <AvatarFallback className="bg-sky-500 text-white rounded-full">
               {avatarFallback}
@@ -175,7 +137,6 @@ const ProfileCard = () => {
           </div>
         </div>
 
-        {/* Follower and following counts */}
         <div className="flex gap-8 items-center justify-center md:justify-end w-full sm:w-auto">
           <div className="text-center">
             <p className="font-semibold">{userData?.data.followers?.length}</p>
@@ -187,8 +148,7 @@ const ProfileCard = () => {
           </div>
         </div>
 
-        {/* Edit Profile Button */}
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="ml-4">Edit Profile</Button>
           </DialogTrigger>
@@ -204,11 +164,10 @@ const ProfileCard = () => {
                     width={124}
                     height={124}
                     alt="Image Preview"
-                    className="w-56 h-56 rounded-full border mt-2 cursor-pointer" 
-                    onClick={() => document.getElementById("fileInput")?.click()} 
+                    className="w-56 h-56 rounded-full border mt-2 cursor-pointer"
+                    onClick={() => document.getElementById("fileInput")?.click()}
                   />
                 </div>
-                {/* Hidden file input for image upload */}
                 <input
                   type="file"
                   accept="image/*"
@@ -247,11 +206,10 @@ const ProfileCard = () => {
                   placeholder="Enter your email"
                 />
               </div>
-              {/* Add more form fields here if needed */}
             </div>
             <div className="mt-4 flex justify-end">
               <Button onClick={handleSave} className="mr-2">
-                Save
+                Update Profile
               </Button>
             </div>
           </DialogContent>

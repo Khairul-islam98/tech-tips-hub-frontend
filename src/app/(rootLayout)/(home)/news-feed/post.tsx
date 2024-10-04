@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Image from "next/image";
-import { useGetAllPosts } from "@/hooks/post-hook"; // Custom hook to fetch posts
+import { useGetAllPosts } from "@/hooks/post-hook";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -16,11 +16,11 @@ const PostCard = () => {
   const { data, isLoading, isError, refetch } = useGetAllPosts(); // Fetch posts
 
   useEffect(() => {
-    refetch(); // Refetch posts on component mount
+    refetch(); 
   }, [refetch]);
 
-  if (isLoading) return <div>Loading...</div>; // Loading state
-  if (isError) return <div>Error loading posts.</div>; // Error state
+  if (isLoading) return <div>Loading...</div>; 
+  if (isError) return <div>Error loading posts.</div>; 
 
   return (
     <div className="bg-gray-800 text-white max-w-3xl mx-auto rounded-lg shadow-lg p-4 space-y-8 group relative w-full  bg-white/20  shadow-black/5 ring-[0.8px] ring-black/5">
