@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dialog";
 import { VoteButton } from "../components/vote-button";
 import { CheckCircle } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -43,7 +44,6 @@ const PostCard = () => {
   const { data: userData, refetch: refetchOnSuccess } = useGetMyProfile(
     user?.email
   );
- 
 
   const followMutation = useUserFollow();
   const unfollowMutation = useUserUnfollow();
@@ -60,12 +60,7 @@ const PostCard = () => {
     }
   };
 
-
   if (isLoading) return <Loader />;
-
-
-
-  
 
   return (
     <div className="bg-gray-800 text-white max-w-3xl mx-auto rounded-lg shadow-lg p-4 space-y-8 group relative w-full bg-white/20 shadow-black/5 ring-[0.8px] ring-black/5">
@@ -118,10 +113,20 @@ const PostCard = () => {
                   <div>
                     <p className="font-bold flex">
                       {post.authorId?.name || "Unknown Author"}
-                      {post.authorId?.isVerified === true ?   <CheckCircle className="ml-1 text-green-500 text-center mt-1.5" size={12} /> : null}
+                      {post.authorId?.isVerified === true ? (
+                        <CheckCircle
+                          className="ml-1 text-green-500 text-center mt-1.5"
+                          size={12}
+                        />
+                      ) : null}
                     </p>
                     <p className="text-gray-400 text-sm">
-                      {new Date(post.createdAt).toLocaleDateString()}
+                      {new Date(post.createdAt).toLocaleDateString()} |{" "}
+                      <span>
+                        {formatDistanceToNow(new Date(post?.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -151,19 +156,19 @@ const PostCard = () => {
 
               {/* Post Images */}
               <div className="space-y-4 mb-4">
-                {post.images?.map((imageUrl: any, index: any) => (
-                  <Thumbnail key={index} url={imageUrl} />
-                ))}
+                {/* Display the first image if it exists */}
+                {post.images?.length > 0 && (
+                  <Thumbnail key="single-image" url={post.images[0]} />
+                )}
               </div>
 
               {/* Footer */}
               <div className="flex justify-between items-center mt-4">
                 <div className="flex items-center space-x-4 text-gray-400">
                   {/* Upvote/Downvote */}
-                 <div className="">
-                  <VoteButton
-                   post={post} />
-                 </div>
+                  <div className="">
+                    <VoteButton post={post} />
+                  </div>
 
                   {/* Comments */}
                   <Link href={`/post-details/${post._id}`} passHref>

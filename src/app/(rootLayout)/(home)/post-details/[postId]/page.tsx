@@ -36,13 +36,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import DetailsVoteButton from "./details-vote-button";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Download } from "lucide-react";
+import ImageGrid from "@/components/image-grid";
+import { Hint } from "@/components/hint";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
 const PostDetails = () => {
   const [newComment, setNewComment] = useState("");
-  const [isShareOpen, setIsShareOpen] = useState(false);
   const commentInputRef = useRef<HTMLDivElement>(null);
   const params = useParams();
   const { user } = useUser();
@@ -54,6 +57,7 @@ const PostDetails = () => {
   const { data: Comments, refetch } = useGetComment(postId);
   const { mutate: createComment } = useCreateComment();
   const [openSharePostId, setOpenSharePostId] = useState<string | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const authorUserId = post?.data?.authorId?._id;
   const userIdforFollow = userData?.data?._id;
@@ -101,14 +105,35 @@ const PostDetails = () => {
     }
   };
 
+  
+
+  const generatePDF = async () => {
+    const doc = new jsPDF();
+  
+    const element = contentRef.current;
+
+  
+    if (element) {
+  
+      const canvas = await html2canvas(element);
+      
+    
+      const imgData = canvas.toDataURL("image/jpeg"); 
+  
+     
+      doc.addImage(imgData, "JPEG", 10, 10, 190, 0); 
+    }
+  
+    
+    doc.save(`${post?.data?.title}.pdf`);
+  };
+
+
   if (isLoading) return <Loader />;
-
-
-
 
   return (
     <div className="flex flex-col justify-center items-center p-4">
-      <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 space-y-6">
+      <div ref={contentRef}  className="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 space-y-6">
         {/* Post Header */}
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-4">
@@ -178,17 +203,19 @@ const PostDetails = () => {
         </div>
 
         {/* Post Title */}
-        <h1 className="text-4xl font-semibold mb-4">{post?.data?.title}</h1>
+        <h1  className="text-4xl font-semibold mb-4">{post?.data?.title}</h1>
 
         {/* Post Images */}
-        <div className="grid gap-4 mb-6">
-          {post?.data?.images?.map((imageUrl: string, index: number) => (
-            <Thumbnail key={index} url={imageUrl} />
-          ))}
-        </div>
+        {post?.data?.images?.length > 0 &&  <div className="flex flex-col justify-center items-center p-4">
+            <div className="">
+               
+                <ImageGrid images={post?.data?.images} />
 
+            </div>
+        </div>
+}
         {/* Post Content */}
-        <div className="text-lg mb-6">
+        <div id="post-content"  className="text-lg mb-6">
           <Renderer value={post?.data?.content} />
         </div>
 
@@ -243,8 +270,8 @@ const PostDetails = () => {
                           </svg>
                           <span>
                             {openSharePostId === post?._id
-                              ? "Hide Share Options"
-                              : "Share"}
+                              ? "Close" :
+                              "Share"}
                           </span>
                         </button>
                       </DialogTrigger>
@@ -289,10 +316,17 @@ const PostDetails = () => {
 
                         {/* Dialog Close Button */}
                         <DialogClose asChild>
-                          <Button className="btn-close mt-4">Close</Button>
+                       
                         </DialogClose>
                       </DialogContent>
                     </Dialog>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-gray-200 p-2 rounded-full hover:bg-gray-300 cursor-pointer">
+                    <Hint label="PDF download">
+                      <button onClick={generatePDF}>
+                        <Download size={24} />
+                      </button>
+                    </Hint>
                   </div>
           </div>
         </div>
