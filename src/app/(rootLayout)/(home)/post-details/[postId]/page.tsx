@@ -48,7 +48,7 @@ const PostDetails = () => {
   const [newComment, setNewComment] = useState("");
   const commentInputRef = useRef<HTMLDivElement>(null);
   const params = useParams();
-  const { user } = useUser();
+  const { user, setIsLoading } = useUser();
   const { data: post, isLoading } = useGetSinglePost(params.postId);
   const { data: userData, refetch: refetchOnSuccess } = useGetMyProfile(user?.email);
   const postId = Array.isArray(params.postId)
@@ -130,6 +130,7 @@ const PostDetails = () => {
 
 
   if (isLoading) return <Loader />;
+  if(!post) return <div className="flex mt-20 mx-auto items-center text-center justify-center">Post not found</div>
 
   return (
     <div className="flex flex-col justify-center items-center p-4">

@@ -24,23 +24,22 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleUser = async () => {
-    const user = await getCurrentUser();
-    if (user) {
+    
+      const user = await getCurrentUser();
       setUser(user);
-    } else {
-      setUser(null);
-    }
-    setIsLoading(false);
-  };
+      setIsLoading(false);
+    } 
   useEffect(() => {
-    handleUser();
+    handleUser(); 
   }, [isLoading]);
+
   return (
     <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
       {children}
     </UserContext.Provider>
   );
 };
+
 export const useUser = () => {
   const context = useContext(UserContext);
 

@@ -22,8 +22,8 @@ const DetailsVoteButton = ({ post }: { post: Post }) => {
     const [hasDownvoted, setHasDownvoted] = useState(false);
 
     const [voteCount, setVoteCount] = useState({
-        upvotes: post?.upvotes?.length,
-        downvotes: post?.downvotes?.length,
+        upvotes: post?.upvotes?.length || 0 ,
+        downvotes: post?.downvotes?.length || 0,
       });
     
       useEffect(() => {
