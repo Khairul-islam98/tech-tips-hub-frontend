@@ -38,7 +38,7 @@ const Sidebar = () => {
     },
     {
       name: "Manage Posts",
-      path: "manage-posts",
+      path: "/admin/manage-posts",
     },
     {
       name: "Manage Users",
