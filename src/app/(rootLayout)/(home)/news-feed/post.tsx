@@ -34,6 +34,7 @@ import {
 import { VoteButton } from "../components/vote-button";
 import { CheckCircle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useRouter } from "next/navigation";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -44,6 +45,7 @@ const PostCard = () => {
   const { data: userData, refetch: refetchOnSuccess } = useGetMyProfile(
     user?.email
   );
+  const router = useRouter()
 
   const followMutation = useUserFollow();
   const unfollowMutation = useUserUnfollow();
@@ -67,6 +69,7 @@ const PostCard = () => {
       <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 opacity-[0.15] blur-lg"></div>
       <div className="relative space-y-5 rounded-[0.62rem] shadow-sm shadow-black/5 ring-[0.8px] ring-black/5">
         {data?.data?.map((post: any) => {
+
           const authorUserId = post.authorId?._id;
           const userIdforFollow = userData?.data?._id;
 
@@ -76,6 +79,10 @@ const PostCard = () => {
           );
 
           const handleFollowToggle = async () => {
+            if(!user){
+              router.push('/login')
+              return
+            }
             try {
               if (isFollowing) {
                 unfollowMutation.mutate(

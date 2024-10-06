@@ -37,8 +37,8 @@ const Sidebar = () => {
       path: "/admin/admin",
     },
     {
-      name: "Manage Cars",
-      path: "/admin/manage-cars",
+      name: "Manage Users",
+      path: "/admin/manage-users",
     },
     {
       name: "Manage Bookings",
@@ -88,9 +88,9 @@ const Sidebar = () => {
       {/* Desktop Sidebar */}
       <div className="w-[300px] px-4 py-8 border-r h-[100vh] hidden lg:block fixed top-0 left-0  bg-white shadow-lg dark:bg-gray-900">
         {/* Logo */}
-        <div className="max-w-[160px] pb-4 text-center mx-auto border-b">
+        <div className="max-w-[160px] pb-4 text-center mx-auto border-b ">
           <h1 className="mb-4 text-gray-600 dark:text-white">
-            Welcome Car <span className="text-[#FEA633]">Rental</span> 😍
+            Welcome Tech <span className="text-[#0EA5E9]">Hub</span>
           </h1>
           <DropdownMenu>
                     <DropdownMenuTrigger

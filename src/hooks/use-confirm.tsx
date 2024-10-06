@@ -6,6 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
@@ -32,7 +33,7 @@ export const useConfirm = (title: string, message: string): [() => JSX.Element, 
 
   const ConfirmDialog = () => {
     return (
-      <Dialog open={promise !== null}>
+      <Dialog open={promise !== null} onOpenChange={handleCancel}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>

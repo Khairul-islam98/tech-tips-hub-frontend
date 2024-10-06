@@ -1,12 +1,60 @@
 import {
   createFollow,
   createUnfollow,
+  deleteUser,
+  getAllUsers,
   getMyProfile,
   updateProfile,
+  updateUser,
 } from "@/services/user-services";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: ["GET_ALL_USER"],
+    queryFn: async () => await getAllUsers(),
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["UPDATE_USER"],
+    mutationFn: async ({ id, userData }: { id: string; userData: any }) => {
+      const result = await updateUser(id, userData);
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+      toast.success("User updated successfully.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, Error, string>({
+    mutationKey: ["DELETE_USER"],
+    mutationFn: async (id: string) => await deleteUser(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+
+      toast.success("User deleted successfully.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
 
 export const useGetMyProfile = (email: any) => {
   return useQuery({

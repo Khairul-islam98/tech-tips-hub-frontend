@@ -25,6 +25,7 @@ import Loader from "@/components/loader";
 import dynamic from "next/dynamic";
 import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion"; // Import motion from framer-motion
+import { CheckCircle } from "lucide-react";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -69,11 +70,11 @@ export const UserPost = () => {
           <motion.div
             key={post._id}
             className="bg-white text-black p-6 rounded-lg shadow-md transition duration-200 hover:-translate-y-1"
-            initial={{ opacity: 0, scale: 0.95 }} // Initial state
-            animate={{ opacity: 1, scale: 1 }} // Animated state
-            exit={{ opacity: 0, scale: 0.95 }} // Exit state
-            transition={{ duration: 0.3 }} // Transition settings
-            whileHover={{ scale: 1.05, backgroundColor: "#f9fafb" }} // New hover effect
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }} 
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }} 
+            whileHover={{ scale: 1.05, backgroundColor: "#f9fafb" }} 
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
@@ -85,8 +86,14 @@ export const UserPost = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-bold">
+                  <p className="font-bold flex">
                     {post.authorId?.name || "Unknown Author"}
+                    {post.authorId?.isVerified === true ? (
+                        <CheckCircle
+                          className="ml-1 text-green-500 text-center mt-1.5"
+                          size={12}
+                        />
+                      ) : null}
                   </p>
                   <p className="text-gray-400 text-sm">
                     {formatDistanceToNow(new Date(post.createdAt), {

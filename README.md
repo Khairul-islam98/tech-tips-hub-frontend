@@ -5,7 +5,7 @@ This project is a sample implementation of a Tech Tips Hub application using Typ
 ---
 
 ## Live Link
-
+https://tech-tips-hub.vercel.app
 
 
 
@@ -35,6 +35,8 @@ This project is a sample implementation of a Tech Tips Hub application using Typ
 - Tailwind css
 - Shadcn
 - Quill js
+- framer-motion
+- Cloudinary
 
 ---
 
@@ -45,8 +47,8 @@ admin password: 123456
 ```
 # User Credentials
 ```
-user email:
-user password:
+user email: test@gmail.com
+user password: 123456
 ```
 
 # How to run the application locally
