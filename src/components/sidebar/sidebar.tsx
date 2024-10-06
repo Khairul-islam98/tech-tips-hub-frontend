@@ -37,17 +37,18 @@ const Sidebar = () => {
       path: "/admin/admin",
     },
     {
+      name: "Manage Posts",
+      path: "manage-posts",
+    },
+    {
       name: "Manage Users",
       path: "/admin/manage-users",
     },
     {
-      name: "Manage Bookings",
-      path: "manage-bookings",
+      name: "Manage Admin",
+      path: "/admin/manage-admin",
     },
-    {
-      name: "Manage Return Cars",
-      path: "manage-return-cars",
-    },
+   
     {
       name: "User Management",
       path: "manage-users",

@@ -7,15 +7,15 @@ import { toast } from "sonner";
 
 interface DeleteUserProps {
     id: string
-    user: any
+    admin: any
 }
 
 
-export const DeleteUser = ({id, user}: DeleteUserProps) => {
+export const DeleteAdmin = ({id, admin}: DeleteUserProps) => {
 
     const [ConfirmDialog, confirm] = useConfirm(
         "Are you sure?",
-        `Delete This User ${user.name}?`
+        `Delete This Admin ${admin.name}?`
       );
       const {mutate: deleteUser} = useDeleteUser()
 
@@ -25,7 +25,7 @@ export const DeleteUser = ({id, user}: DeleteUserProps) => {
         if (!ok) return
         deleteUser(id, {
             onSuccess: () => {
-                toast.success("User deleted successfully");
+                toast.success("Admin deleted successfully");
             }
         })
       

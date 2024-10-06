@@ -21,28 +21,28 @@ import { toast } from "sonner";
 
 
 interface EditUserProps {
-  user: any;
+  admin: any;
 }
 
-export const EditUser = ({ user}: EditUserProps) => {
+export const EditAdmin = ({ admin}: EditUserProps) => {
     const [open, setOpen] = useState(false);
     const { register, handleSubmit, control } = useForm();
-    const {mutate: updateUser} = useUpdateUser()
+    const {mutate: updateAdmin} = useUpdateUser()
  
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         
-        const userData = {
-            id: user._id,
+        const adminData = {
+            id: admin._id,
           name: data.name,
           status: data.status,
           role: data.role,
         };
         
-        updateUser({ id: user._id, userData }, {
+        updateAdmin({ id: admin._id, userData: adminData }, {
           onSuccess: () => {
+            toast.success("Admin updated successfully");
             setOpen(false);
-            toast.success("User updated successfully");
           
           },
         })
@@ -63,16 +63,16 @@ export const EditUser = ({ user}: EditUserProps) => {
     <DialogContent className="sm:max-w-[425px] max-h-screen overflow-y-auto">
       <DialogHeader>
         <DialogTitle className=" hover:text-[#FEA633]] font-semibold">
-          Edit User
+          Edit Admin
         </DialogTitle>
-        <DialogDescription>Make changes to your user here.</DialogDescription>
+        <DialogDescription>Make changes to your admin here.</DialogDescription>
       </DialogHeader>
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="name" className="text-right">
             Name
           </Label>
-          <Input {...register("name")} id="name" defaultValue={user.name} className="col-span-3" />
+          <Input {...register("name")} id="name" defaultValue={admin.name} className="col-span-3" />
         
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
@@ -81,7 +81,7 @@ export const EditUser = ({ user}: EditUserProps) => {
           </Label>
           <Controller
             name="status"
-            defaultValue={user.status}
+            defaultValue={admin.status}
             control={control}
             // rules={{ required: true }}
             render={({ field }) => (
@@ -105,7 +105,7 @@ export const EditUser = ({ user}: EditUserProps) => {
           </Label>
           <Controller
             name="role"
-            defaultValue={user.role}
+            defaultValue={admin.role}
             control={control}
             // rules={{ required: true }}
             render={({ field }) => (
@@ -129,7 +129,7 @@ export const EditUser = ({ user}: EditUserProps) => {
             type="submit"
             className="w-full  hover:text-white font-bold text-2xl"
           >
-            Edit User
+            Edit admin
           </Button>
         </DialogFooter>
       </form>
