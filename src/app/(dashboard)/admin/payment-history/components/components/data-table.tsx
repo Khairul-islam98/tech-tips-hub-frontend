@@ -31,7 +31,7 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-
+  // Ensure `rows` is an array
   const rows = table.getRowModel()?.rows || [];
   return (
     <div className="data-table">

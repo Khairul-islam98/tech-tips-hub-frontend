@@ -60,6 +60,7 @@ export const EditAdmin = ({ admin}: EditUserProps) => {
         <Edit size={16} />
       </Button>
     </DialogTrigger>
+    {/* @ts-ignore */}
     <DialogContent className="sm:max-w-[425px] max-h-screen overflow-y-auto">
       <DialogHeader>
         <DialogTitle className=" hover:text-[#FEA633]] font-semibold">

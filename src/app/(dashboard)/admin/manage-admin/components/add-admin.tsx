@@ -61,6 +61,7 @@ export const AddAdmin = ({refetch}: AddAdminProps) => {
           <span className=" relative z-10">Add Admin</span>
         </Button>
       </DialogTrigger>
+      {/* @ts-ignore */}
       <DialogContent className="sm:max-w-[425px] max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle className=" hover:text-[#FEA633]] font-semibold">
@@ -102,7 +103,7 @@ export const AddAdmin = ({refetch}: AddAdminProps) => {
               type="submit"
               className="w-full mt-2 cursor-pointer  text-white relative h-[50px]  font-bold text-2xl"
             >
-              <span className=" relative z-10">Add Admin</span>
+              Add Admin
             </Button>
           </DialogFooter>
         </form>

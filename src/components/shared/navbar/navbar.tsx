@@ -97,6 +97,7 @@ const Navbar = () => {
                 />
               </Button>
             </SheetTrigger>
+              {/* @ts-ignore */}
             <SheetContent className="flex flex-col justify-between items-center">
               <SheetHeader className="w-full">
                 <SheetTitle className="text-xl mb-4">Menu</SheetTitle>

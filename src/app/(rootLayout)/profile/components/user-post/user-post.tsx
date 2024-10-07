@@ -175,6 +175,7 @@ export const UserPost = () => {
                         <span className="text-sm font-normal">Share</span>
                       </button>
                     </DialogTrigger>
+                      {/* @ts-ignore */}
                     <DialogContent className="p-4 rounded-lg">
                       
                       <h3 className="text-lg font-bold mb-2">

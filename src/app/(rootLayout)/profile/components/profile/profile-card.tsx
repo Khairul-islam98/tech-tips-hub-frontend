@@ -175,6 +175,7 @@ const ProfileCard = () => {
           <DialogTrigger asChild>
             <Button className="ml-4">Edit Profile</Button>
           </DialogTrigger>
+            {/* @ts-ignore */}
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Profile</DialogTitle>

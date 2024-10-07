@@ -227,7 +227,7 @@ const PostCard = () => {
                           </span>
                         </button>
                       </DialogTrigger>
-
+                        {/* @ts-ignore */}
                       <DialogContent className="">
                         <h3 className="text-xl font-bold mb-4">
                           Share this post:

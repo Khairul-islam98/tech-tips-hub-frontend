@@ -3,109 +3,144 @@
 import { Button } from "@/components/ui/button";
 import { Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
+   
     DialogHeader,
     DialogTitle,
     DialogTrigger, } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import envConfig from "@/config/env-config";
 
-import { useUserRegistration } from "@/hooks/auth";
+import { useUser } from "@/context/user-provider";
 
-import { useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreatePost } from "@/hooks/post-hook";
+import axios from "axios";
+import { Edit } from "lucide-react";
+import dynamic from "next/dynamic";
+import Quill from "quill";
+
+import {  useRef, useState } from "react";
+const PostEditor = dynamic(() => import("@/components/post-editor"), { ssr: false });
 
 interface AddAdminProps {
     refetch: () => Promise<any>; 
   }
-export const AddAdmin = ({refetch}: AddAdminProps) => {
-    const [open, setOpen] = useState(false);
-    const { register, handleSubmit, reset } = useForm();
-    const {mutate: createAdmin, isSuccess, data: registerResponse} = useUserRegistration()
+export const AddPost = ({refetch}: AddAdminProps) => {
+  const [uploading, setUploading] = useState(false);
+  const [editorKey, setEditorKey] = useState(0);
+  const editorRef = useRef<Quill | null>(null);
+  const { user } = useUser(); 
+    const [isOpen, setIsOpen] = useState(false);
+    const {mutate: createPost, reset} = useCreatePost()
   
-
-    useEffect(()=> {
-        if(registerResponse && !registerResponse.success){
-           toast.error(registerResponse.message);
-        }else if(registerResponse && registerResponse.success){
-          if (isSuccess) {
-            setOpen(false);
-            refetch();
-            reset();
+    const handleSubmit = async ({
+      title,
+      body,
+      category,
+      isPremium,
+      images
+    }: {
+      title: string;
+      body: string;
+      images: File[] | null;
+      category: string;
+      isPremium: boolean;
+    }) => {
+      
+      
+      let imageUrls: string[] = []; 
+    
+      if (images && images.length > 0) {
+        setUploading(true);
+    
+     
+        for (const image of images) {
+          const formData = new FormData();
+          formData.append("file", image);
+          if (envConfig.uploadPreset) {
+            formData.append("upload_preset", envConfig.uploadPreset);
+          } else {
+            throw new Error("Upload preset is not defined");
           }
-          toast.success("admin create successful");
+          if (envConfig.cloudName) {
+            formData.append("cloud_name", envConfig.cloudName);
+          } else {
+            throw new Error("Cloud name is not defined");
+          }
+    
+          try {
+            const response = await axios.post(
+              `https://api.cloudinary.com/v1_1/${envConfig.cloudName}/image/upload`,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+                onUploadProgress: (progressEvent) => {
+                  const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+                  console.log(`Upload progress: ${percentCompleted}%`);
+                },
+              }
+            );
+    
+         
+            imageUrls.push(response.data.secure_url);
+          } catch (error) {
+            console.error("Image upload failed:", error);
+          }
         }
-      }, [registerResponse, isSuccess]);
+    
+        setUploading(false);
+      }
+    
+      console.log("imageUrls", imageUrls);
+    
+      const postData = {
+        title,
+        content: body,
+        category,
+        isPremium,
+        authorId: user?._id || "",
+        images: imageUrls,
+      };
+    
+    
+      try {
+        createPost(postData, {
+          onSuccess: () => {
+          
+            setEditorKey((prevKey) => prevKey + 1);
+            setIsOpen(false);
+            refetch()
+        
+          },
+          onError: () => {
+            console.error("Failed to create post");
+          }
+        });
+      } catch (error) {
+        console.error("Error submitting post:", error);
+      }
+    };
+    
     
 
 
-    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-
-        const userData = {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          role: "admin"
-        };
-        createAdmin(userData)
-    }
+  
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          onClick={() => setOpen(true)}
-          className="mb-2 mt-2 cursor-pointer  text-white  h-[50px]  font-bold text-2xl"
-        >
-          <span className=" relative z-10">Add Admin</span>
+        <Button onClick={() => setIsOpen(true)}> 
+          Add Post
+          <Edit size={16} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-h-screen overflow-y-auto">
+        {/* @ts-ignore */}
+      <DialogContent className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className=" hover:text-[#FEA633]] font-semibold">
-            Add Car
-          </DialogTitle>
-          <DialogDescription>Make changes to your car here.</DialogDescription>
+          <DialogTitle>Update Post</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input {...register("name")} id="name" className="col-span-3" />
-          
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input
-            type="email"
-            {...register("email")}
-            className=" col-span-3"
-          />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Passoword
-            </Label>
-            <Input
-            type="password"
-            {...register("password")}
-            className=" col-span-3"></Input>
-          </div>
-         
-          
-          <DialogFooter>
-            <Button
-              type="submit"
-              className="w-full mt-2 cursor-pointer  text-white relative h-[50px]  font-bold text-2xl"
-            >
-              <span className=" relative z-10">Add Admin</span>
-            </Button>
-          </DialogFooter>
-        </form>
+        <PostEditor
+          key={editorKey}
+          onSubmit={handleSubmit}
+          innerRef={editorRef}
+        />
       </DialogContent>
     </Dialog>
     );

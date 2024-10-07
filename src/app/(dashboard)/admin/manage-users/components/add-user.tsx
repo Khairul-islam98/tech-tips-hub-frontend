@@ -60,6 +60,7 @@ const AddUser = ({refetch}: AddUserProps) => {
           <span className=" relative z-10">Add User</span>
         </Button>
       </DialogTrigger>
+        {/* @ts-ignore */}
       <DialogContent className="sm:max-w-[425px] max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle className=" hover:text-[#FEA633]] font-semibold">

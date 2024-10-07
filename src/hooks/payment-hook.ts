@@ -1,6 +1,9 @@
-import { premiumPayment } from "@/services/premium-payment-services";
+import {
+  getAllPayments,
+  premiumPayment,
+} from "@/services/premium-payment-services";
 import { PremiumPayment } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const usePremiumPayment = () => {
@@ -10,5 +13,12 @@ export const usePremiumPayment = () => {
     onError: (error) => {
       toast.error(error.message);
     },
+  });
+};
+
+export const useGetAllPayments = () => {
+  return useQuery({
+    queryKey: ["GET_ALL_PAYMENTS"],
+    queryFn: async () => await getAllPayments(),
   });
 };

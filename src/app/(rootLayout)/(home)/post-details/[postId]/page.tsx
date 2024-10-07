@@ -276,7 +276,7 @@ const PostDetails = () => {
                           </span>
                         </button>
                       </DialogTrigger>
-
+                          {/* @ts-ignore */}
                       <DialogContent>
                         <h3 className="text-xl font-bold mb-4">
                           Share this post:

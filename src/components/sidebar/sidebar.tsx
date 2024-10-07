@@ -50,8 +50,8 @@ const Sidebar = () => {
     },
    
     {
-      name: "User Management",
-      path: "manage-users",
+      name: "Payments History",
+      path: "/admin/payment-history",
     },
   ];
 
@@ -167,11 +167,11 @@ const Sidebar = () => {
                 />
               </Button>
           </SheetTrigger>
-
+                {/* @ts-ignore */}
           <SheetContent className="">
             <SheetHeader>
               <SheetTitle className="mb-4 text-gray-600 text-center">
-                Welcome Car <span className="text-[#FEA633]">Rental</span> 😍
+                Welcome Tech <span className="text-sky-500">Hub</span> 😍
               </SheetTitle>
 
               <SheetTitle className="font-bold uppercase text-gray-600 text-center">

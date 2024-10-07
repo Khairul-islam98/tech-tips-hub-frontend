@@ -26,7 +26,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-
 type EditorValue = {
   title: string;
   images: File[] | null;
@@ -40,6 +39,10 @@ interface EditorProps {
   onCancel?: () => void;
   placeholder?: string;
   defaultValue?: Delta | Op[];
+  defaultTitle?: string;
+  defaultCategory?: string;
+  defaultIsPremium?: boolean;
+  defaultImages?: File[];
   disabled?: boolean;
   innerRef?: MutableRefObject<Quill | null>;
   variant?: "create" | "update";
@@ -52,16 +55,20 @@ const PostEditor = ({
   onCancel,
   placeholder = "Write something...",
   defaultValue = [],
+  defaultTitle = "",
+  defaultCategory = "",
+  defaultIsPremium = false,
+  defaultImages = [],
   disabled = false,
   innerRef,
   variant = "create",
 }: EditorProps) => {
-  const [title, setTitle] = useState(""); // New state for the title
+  const [title, setTitle] = useState(defaultTitle);
   const [text, setText] = useState("");
   const [isToolbarVisible, setIsToolbarVisible] = useState(true);
-  const [images, setImages] = useState<File[]>([]);
-  const [category, setCategory] = useState("");
-  const [isPremium, setIsPremium] = useState(false);
+  const [images, setImages] = useState<(File | string)[]>(defaultImages);
+  const [category, setCategory] = useState(defaultCategory);
+  const [isPremium, setIsPremium] = useState(defaultIsPremium);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef(onSubmit);
@@ -107,7 +114,13 @@ const PostEditor = ({
                 if (isEmpty) return;
 
                 const body = JSON.stringify(quill.getContents());
-                submitRef.current?.({ title, body, images, category, isPremium });
+                submitRef.current?.({
+                  title,
+                  body,
+                  images: images.filter((image): image is File => typeof image !== "string"),
+                  category,
+                  isPremium,
+                });
               },
             },
             shift_enter: {
@@ -125,6 +138,9 @@ const PostEditor = ({
 
     quillRef.current = quill;
     quillRef.current.focus();
+    if (defaultValue) {
+      quill.setContents(defaultValue);
+    }
 
     if (innerRef) {
       innerRef.current = quill;
@@ -186,43 +202,38 @@ const PostEditor = ({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Enter the title"
-        className="mb-2" 
+        className="mb-2"
         disabled={disabled}
       />
 
       <div className="flex gap-5">
-      <div className="w-96 mb-2">
-        <Select
-          name="category"
-          onValueChange={setCategory} // Update category state on selection
-        >
-          <SelectTrigger className="col-span-3">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="web">Web</SelectItem>
-              <SelectItem value="software engineering">
-                Software Engineering
-              </SelectItem>
-              <SelectItem value="AI">AI</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        
-      </div>
-      {/* Premium Checkbox */}
-      <div className="mt-1">
-        <label className="inline-flex items-center text-sm">
-          <input
-            type="checkbox"
-            checked={isPremium} // Binds the checkbox state to isPremium
-            onChange={(e) => setIsPremium(e.target.checked)} // Updates isPremium based on checkbox status
-            className="mr-2"
-          />
-          Mark as Premium
-        </label>
-        
+        <div className="w-96 mb-2">
+          <Select name="category" defaultValue={defaultCategory} onValueChange={setCategory}>
+            <SelectTrigger className="col-span-3">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="web">Web</SelectItem>
+                <SelectItem value="software engineering">
+                  Software Engineering
+                </SelectItem>
+                <SelectItem value="AI">AI</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Premium Checkbox */}
+        <div className="mt-1">
+          <label className="inline-flex items-center text-sm">
+            <input
+              type="checkbox"
+              checked={isPremium} // Binds the checkbox state to isPremium
+              onChange={(e) => setIsPremium(e.target.checked)} // Updates isPremium based on checkbox status
+              className="mr-2"
+            />
+            Mark as Premium
+          </label>
         </div>
       </div>
 
@@ -231,7 +242,6 @@ const PostEditor = ({
         accept="image/*"
         ref={imageElementRef}
         onChange={handleImageChange}
-      
         className="hidden"
         multiple
       />
@@ -257,12 +267,21 @@ const PostEditor = ({
                     <XIcon className="size-3.5" />
                   </button>
                 </Hint>
-                <Image
-                  src={URL.createObjectURL(image)}
-                  alt="Upload"
-                  fill
-                  className="rounded-xl overflow-hidden border object-cover"
-                />
+                {typeof image === "string" ? (
+                  <Image
+                    src={image} // Use the URL directly for string-based images
+                    alt="Uploaded Image"
+                    fill
+                    className="rounded-xl overflow-hidden border object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={URL.createObjectURL(image)} // Create an object URL for File-based images
+                    alt="Uploaded Image"
+                    fill
+                    className="rounded-xl overflow-hidden border object-cover"
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -298,24 +317,29 @@ const PostEditor = ({
             </Hint>
           )}
           {variant === "update" && (
-            <div className="ml-auto flex items-center gap-x-2">
+            <Hint label="Image">
               <Button
-                variant="outline"
-                size="sm"
-                onClick={onCancel}
                 disabled={disabled}
+                variant="ghost"
+                size="iconSm"
+                onClick={() => imageElementRef.current?.click()}
               >
-                Cancel
+                <ImageIcon className="size-4" />
               </Button>
+            </Hint>
+          )}
+          {variant === "update" && (
+            <div className="ml-auto flex items-center gap-x-2">
+              
               <Button
                 disabled={disabled || isEmpty}
                 onClick={() => {
                   onSubmit({
-                    title,
+                    title: title,
                     body: JSON.stringify(quillRef.current?.getContents()),
-                    images,
-                    category,
-                    isPremium
+                    images: images.filter((image): image is File => typeof image !== "string"),
+                    category: category,
+                    isPremium: isPremium,
                   });
                 }}
                 size="sm"
@@ -327,21 +351,21 @@ const PostEditor = ({
           )}
           {variant === "create" && (
             <Button
-            className={cn(
-              "ml-auto",
-              isEmpty || !isTitleValid || !isCategoryValid
-                ? "bg-white hover:bg-white text-muted-foreground"
-                : "bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
-            )}
+              className={cn(
+                "ml-auto",
+                isEmpty || !isTitleValid || !isCategoryValid
+                  ? "bg-white hover:bg-white text-muted-foreground"
+                  : "bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
+              )}
               size="iconSm"
               disabled={disabled || isEmpty}
               onClick={() => {
                 onSubmit({
                   title,
                   body: JSON.stringify(quillRef.current?.getContents()),
-                  images,
+                  images: images.filter((image): image is File => typeof image !== "string"),
                   category,
-                  isPremium
+                  isPremium,
                 });
               }}
             >

@@ -24,6 +24,7 @@ export const Thumbnail = ({ url, className = "" }: ThumbnailProps) => {
                   />
               </div>
           </DialogTrigger>
+            {/* @ts-ignore */}
           <DialogContent className="border-white p-0 m-0 flex justify-center items-center text-red-500">
               <img
                   src={url}

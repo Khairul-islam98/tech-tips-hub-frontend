@@ -97,7 +97,6 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
       images: imageUrls,
     };
   
-    console.log(postData);
   
     try {
       createPost(postData, {
@@ -118,6 +117,7 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+        {/* @ts-ignore */}
       <DialogContent className="w-full mx-auto justify-center max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create Post</DialogTitle>
