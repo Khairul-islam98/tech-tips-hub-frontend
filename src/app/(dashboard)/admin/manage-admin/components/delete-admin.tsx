@@ -20,7 +20,7 @@ export const DeleteAdmin = ({id, admin}: DeleteUserProps) => {
       const {mutate: deleteUser} = useDeleteUser()
 
     const handleDelete = async() => {
-        console.log(id);
+  
         const ok = await confirm();
         if (!ok) return
         deleteUser(id, {

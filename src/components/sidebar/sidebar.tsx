@@ -69,8 +69,8 @@ const Sidebar = () => {
       path: "/user/my-posts",
     },
     {
-      name: "Payment Management",
-      path: "/user/payment-management",
+      name: "User Payment",
+      path: "/user/user-payment",
     },
   ];
 
@@ -167,7 +167,7 @@ const Sidebar = () => {
                 <Hamburger
                   toggled={isOpen}
                   toggle={setIsOpen}
-                  color="#FEA633"
+                  color="#0EA5E9"
                 />
               </Button>
           </SheetTrigger>

@@ -21,3 +21,12 @@ export const getAllPayments = async () => {
     throw new Error(error.response?.data?.message || error.message);
   }
 };
+
+export const getMyPayments = async (userId: any) => {
+  try {
+    const { data } = await axiosInstance.get(`/payment/${userId}`);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};

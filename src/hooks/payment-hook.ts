@@ -1,5 +1,6 @@
 import {
   getAllPayments,
+  getMyPayments,
   premiumPayment,
 } from "@/services/premium-payment-services";
 import { PremiumPayment } from "@/types";
@@ -20,5 +21,11 @@ export const useGetAllPayments = () => {
   return useQuery({
     queryKey: ["GET_ALL_PAYMENTS"],
     queryFn: async () => await getAllPayments(),
+  });
+};
+export const useGetMyPayment = (userId: any) => {
+  return useQuery({
+    queryKey: ["GET_MY_PAYMENTS"],
+    queryFn: async () => await getMyPayments(userId),
   });
 };

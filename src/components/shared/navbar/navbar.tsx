@@ -99,7 +99,7 @@ const Navbar = () => {
                 <Hamburger
                   toggled={isOpen}
                   toggle={setIsOpen}
-                  color="#FEA633"
+                  color="#0EA5E9"
                 />
               </Button>
             </SheetTrigger>
