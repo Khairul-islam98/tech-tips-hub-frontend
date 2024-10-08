@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useContext, ReactNode, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import axiosInstance from '@/lib/axios-instance';
 import { useUser } from './user-provider';
@@ -18,18 +19,18 @@ const NotificationContext = createContext<{
 }>({
   notifications: [],
   loading: true,
-  setNotifications: () => {}, // Default function
-  clearNotification: async () => {}, // Default function
+  setNotifications: () => {},
+  clearNotification: async () => {}, 
 });
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
   
-  // State for notifications
+
   const [notifications, setNotifications] = useState<Notification[]>([]); 
 
-  // Fetch notifications using TanStack Query
-  const { data: fetchedNotifications = [], isLoading: loading } = useQuery<Notification[]>({
+
+  const { data, isLoading: loading } = useQuery<Notification[]>({
     queryKey: ['notifications', user?._id],
     queryFn: async () => {
       if (!user?._id) return [];
@@ -40,12 +41,13 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     refetchInterval: 5000,
   });
 
-  // Update notifications state when fetchedNotifications change
   useEffect(() => {
-    setNotifications(fetchedNotifications);
-  }, [fetchedNotifications]);
+    if (data) {
+    
+      setNotifications(data);
+    }
+  }, [data]);
 
-  
   const clearNotification = async () => {
     try {
       if (notifications.length > 0) {

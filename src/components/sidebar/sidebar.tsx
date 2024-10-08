@@ -61,8 +61,8 @@ const Sidebar = () => {
 
   const userRoutes = [
     {
-      name: "User",
-      path: "/user/user",
+      name: "User Analytics",
+      path: "/user/user-analytics",
     },
     {
       name: "My Posts",

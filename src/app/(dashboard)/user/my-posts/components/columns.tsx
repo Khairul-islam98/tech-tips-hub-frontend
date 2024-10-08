@@ -3,9 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+
 import Image from "next/image"
 import { DeleteMyPost } from "./delete-mypost"
 import { UpdateMyPost } from "./update-mypost"
@@ -66,14 +64,7 @@ const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
         header: "Content",
         cell: ({ row }) => <ContentCell content={row.original.content} />,
       },
-      {
-        accessorKey: "title",
-        header: "Title",
-        cell: ({ row }) => (
-          <p className="text-14-medium w-full md:w-28 lg:w-32">{row.original.title}</p>
-        ),
-      },
-      
+     
       {
         accessorKey: "createdAt",
         header: "Time",

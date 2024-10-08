@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <Sidebar />
       </div>
       {/* Main Content */}
-      <div className="mt-12 ml-8 lg:mt-32  flex-1">
+      <div className="mt-12 ml-8 lg:mt-20  flex-1">
         {children}
       </div>
     </div>
