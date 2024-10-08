@@ -132,9 +132,9 @@ const Sidebar = () => {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`text-gray-600 hover:text-[#FEA633] p-2 flex gap-3 items-center text-lg rounded-xl dark:text-white ${
+                  className={`text-gray-600 hover:text-sky-500 p-2 flex gap-3 items-center text-lg rounded-xl dark:text-white ${
                     pathname === item.path
-                      ? "text-[#FEA633] border-l-4 border-[#FEA633] border-b"
+                      ? "text-sky-500 border-l-4 border-sky-500 border-b"
                       : ""
                   }`}
                 >
@@ -145,9 +145,9 @@ const Sidebar = () => {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`text-gray-600 hover:text-[#FEA633] p-2 flex gap-3 items-center text-lg rounded-xl dark:text-white ${
+                  className={`text-gray-600 hover:text-sky-500 p-2 flex gap-3 items-center text-lg rounded-xl dark:text-white ${
                     pathname === item.path
-                      ? "text-[#FEA633] border-l-4 border-[#FEA633] border-b"
+                      ? "text-sky-500 border-l-4 border-sky-500 border-b"
                       : ""
                   }`}
                 >
@@ -175,7 +175,7 @@ const Sidebar = () => {
           <SheetContent className="">
             <SheetHeader>
               <SheetTitle className="mb-4 text-gray-600 text-center">
-                Welcome Tech <span className="text-sky-500">Hub</span> 😍
+                Welcome Tech <span className="text-sky-500">Hub</span> 
               </SheetTitle>
 
               <SheetTitle className="font-bold uppercase text-gray-600 text-center">
@@ -214,9 +214,9 @@ const Sidebar = () => {
                     <SheetClose asChild key={item.path}>
                       <Link
                         href={item.path}
-                        className={`text-gray-600 hover:text-[#FEA633] p-2 flex gap-3 items-center text-lg rounded-xl ${
+                        className={`text-gray-600 hover:text-sky-500 p-2 flex gap-3 items-center text-lg rounded-xl ${
                           pathname === item.path
-                            ? "text-[#FEA633] border-l-4 border-[#FEA633]"
+                            ? "text-sky-500 border-l-4 border-sky-500"
                             : ""
                         }`}
                       >
@@ -228,9 +228,9 @@ const Sidebar = () => {
                     <SheetClose asChild key={item.path}>
                       <Link
                         href={item.path}
-                        className={`text-gray-600 hover:text-[#FEA633] p-2 flex gap-3 items-center text-lg rounded-xl ${
+                        className={`text-gray-600 hover:text-sky-500 p-2 flex gap-3 items-center text-lg rounded-xl ${
                           pathname === item.path
-                            ? "text-[#FEA633] border-l-4 border-[#FEA633] border-b"
+                            ? "text-sky-500 border-l-4 border-sky-500 border-b"
                             : ""
                         }`}
                       >

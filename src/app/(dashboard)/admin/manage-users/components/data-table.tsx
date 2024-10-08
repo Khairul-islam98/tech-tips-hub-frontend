@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import {
     getCoreRowModel,
     useReactTable,
     getPaginationRowModel,
+    getFilteredRowModel,
   } from "@tanstack/react-table";
 
 interface DataTableProps<TData, TValue> {
@@ -29,11 +31,24 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   // Ensure `rows` is an array
   const rows = table.getRowModel()?.rows || [];
   return (
+    <>
+    <div className="flex items-center py-4 space-x-4">
+        <Input
+          placeholder="Search by email..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="w-64"
+        />
+      </div>
+   
     <div className="data-table">
       <Table className="shad-table">
         <TableHeader className="bd-dark-200">
@@ -97,6 +112,7 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
     </div>
+    </>
   );
 }
 

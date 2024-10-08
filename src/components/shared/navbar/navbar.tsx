@@ -86,7 +86,7 @@ const Navbar = () => {
           <div className="flex justify-center items-center gap-2">
             <Image src={logo} alt="logo" className="w-10 h-10" />
             <p className="font-bold text-muted-foreground text-2xl pt-1">
-              Tech <span className="text-[#FEA633]">Hub</span>
+              Tech <span className="text-sky-500">Hub</span>
             </p>
           </div>
         </Link>
@@ -111,8 +111,8 @@ const Navbar = () => {
                     <SheetClose asChild key={route.path}>
                       <Link href={route.path}>
                         <p
-                          className={`flex items-center font-medium text-black hover:text-[#FEA633] uppercase p-2 border-b ${
-                            pathname === route.path ? "text-[#FEA633]" : ""
+                          className={`flex items-center font-medium text-black hover:text-sky-500 uppercase p-2 border-b ${
+                            pathname === route.path ? "text-sky-500" : ""
                           }`}
                         >
                           {route.icon}
@@ -134,7 +134,7 @@ const Navbar = () => {
               <SheetFooter className="w-full">
                 {!user?.email ? (
                   <Link href="/login" className="w-full">
-                    <Button className="w-full mt-2 cursor-pointer bg-[#FEA633] text-white font-bold text-2xl">
+                    <Button className="w-full mt-2 cursor-pointer bg-sky-500 text-white font-bold text-2xl">
                       <span className="relative z-10">LOGIN →</span>
                     </Button>
                   </Link>
@@ -195,8 +195,8 @@ const Navbar = () => {
               <p
                 className={`flex items-center font-medium uppercase ${
                   pathname === route.path
-                    ? "text-[#FEA633]"
-                    : "text-white hover:text-[#FEA633]"
+                    ? "text-sky-500"
+                    : "text-white hover:text-sky-500"
                 }`}
               >
                 {route.icon}
@@ -243,7 +243,7 @@ const Navbar = () => {
           {/* Login/Avatar section */}
           {!user?.email ? (
             <Link href="/login">
-              <Button className="bg-[#FEA633] text-white font-bold text-2xl px-3">
+              <Button className="bg-sky-500 text-white font-bold text-2xl px-3">
                 LOGIN
               </Button>
             </Link>

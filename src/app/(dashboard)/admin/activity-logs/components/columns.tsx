@@ -4,9 +4,9 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
 
-import Image from "next/image"
 
 import { formatDistanceToNow } from "date-fns"
+import { Badge } from "@/components/ui/badge"
 
    
    
@@ -50,6 +50,13 @@ import { formatDistanceToNow } from "date-fns"
         header: "email",
         cell: ({ row }) => (
           <p className="text-14-medium w-full md:w-28 lg:w-32">{row.original.email}</p>
+        ),
+      },
+      {
+        accessorKey: "role",
+        header: "Role",
+        cell: ({ row }) => (
+          <Badge className="text-14-medium text-white">{row.original.role}</Badge>
         ),
       },
       
