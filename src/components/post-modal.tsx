@@ -24,7 +24,7 @@ const PostModal = ({ isOpen, onClose }: PostModalProps) => {
   const editorRef = useRef<Quill | null>(null);
   const { user } = useUser(); 
   const {mutate: createPost, reset} = useCreatePost()
-  const {refetch} = useGetAllPosts()
+  const {refetch} = useGetAllPosts({searchTerm: "", category: "", sort: ""});
 
 
 

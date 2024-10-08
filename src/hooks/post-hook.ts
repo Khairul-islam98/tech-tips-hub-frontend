@@ -25,13 +25,16 @@ export const useCreatePost = () => {
   });
 };
 
-export const useGetAllPosts = () => {
+export const useGetAllPosts = (filters: {
+  searchTerm: string;
+  category: string;
+  sort: string;
+}) => {
   return useQuery({
-    queryKey: ["GET_ALL_POSTS"],
-    queryFn: async () => await getAllPosts(),
+    queryKey: ["GET_ALL_POSTS", filters],
+    queryFn: async () => await getAllPosts(filters),
   });
 };
-
 export const useGetSinglePost = (postId: any) => {
   return useQuery({
     queryKey: ["GET_SINGLE_POST", postId],

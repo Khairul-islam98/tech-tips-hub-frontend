@@ -12,9 +12,28 @@ export const createPost = async (userData: IPost) => {
 };
 
 // get all posts
-export const getAllPosts = async () => {
+
+interface GetAllPostsParams {
+  searchTerm?: string;
+  category?: string;
+  sort?: string;
+}
+export const getAllPosts = async ({
+  searchTerm = "",
+  category = "",
+  sort = "createdAt",
+}: GetAllPostsParams) => {
   try {
-    const { data } = await axiosInstance.get("/posts");
+    // Create an object for params
+    const params: Record<string, string> = {};
+
+    // Conditionally add parameters
+    if (searchTerm) params.searchTerm = searchTerm;
+    if (category) params.category = category;
+    if (sort) params.sort = sort;
+
+    // Make the request with the constructed params object
+    const { data } = await axiosInstance.get(`/posts`, { params });
     return data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message);

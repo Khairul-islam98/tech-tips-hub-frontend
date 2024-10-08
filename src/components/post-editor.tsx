@@ -49,6 +49,8 @@ interface EditorProps {
 }
 
 import { Input } from "./ui/input";
+import { useUser } from "@/context/user-provider";
+import { useGetMyProfile } from "@/hooks/user-hook";
 
 const PostEditor = ({
   onSubmit,
@@ -69,6 +71,8 @@ const PostEditor = ({
   const [images, setImages] = useState<(File | string)[]>(defaultImages);
   const [category, setCategory] = useState(defaultCategory);
   const [isPremium, setIsPremium] = useState(defaultIsPremium);
+  const {user} = useUser();
+  const {data: userData} = useGetMyProfile(user?.email)
 
   const containerRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef(onSubmit);
@@ -219,22 +223,40 @@ const PostEditor = ({
                   Software Engineering
                 </SelectItem>
                 <SelectItem value="AI">AI</SelectItem>
+                <SelectItem value="devops">DevOps</SelectItem>
+                <SelectItem value="machine-learning">Machine Learning</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
         {/* Premium Checkbox */}
-        <div className="mt-1">
-          <label className="inline-flex items-center text-sm">
-            <input
-              type="checkbox"
-              checked={isPremium} // Binds the checkbox state to isPremium
-              onChange={(e) => setIsPremium(e.target.checked)} // Updates isPremium based on checkbox status
-              className="mr-2"
-            />
-            Mark as Premium
-          </label>
-        </div>
+       {userData?.data.isVerified === true ? (
+         <div className="mt-1">
+         <label className="inline-flex items-center text-sm">
+           <input
+             type="checkbox"
+             checked={isPremium}
+             onChange={(e) => setIsPremium(e.target.checked)}
+             className="mr-2"
+           />
+           Mark as Premium
+         </label>
+       </div>
+       ):  <div className="mt-1">
+        <Hint label="Premium user click">
+       <label className="inline-flex items-center text-sm">
+        <input
+           type="checkbox"
+           checked={isPremium}
+           disabled
+           onChange={(e) => setIsPremium(e.target.checked)}
+           className="mr-2"
+         />
+         Mark as Premium
+       </label>
+        </Hint>
+     </div>}
+       
       </div>
 
       <input
