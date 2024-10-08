@@ -163,7 +163,7 @@ const Navbar = () => {
                         {user.role === "admin" ? (
                           <div className="flex items-center">
                             <LayoutDashboardIcon className="w-4 h-4 mr-2" />
-                            <Link href={`/${user.role}/admin`}>Dashboard</Link>
+                            <Link href={`/${user.role}/admin-analytics`}>Dashboard</Link>
                           </div>
                         ) : (
                           <div className="flex items-center">
@@ -266,7 +266,7 @@ const Navbar = () => {
                   {user.role === "admin" ? (
                     <div className="flex items-center">
                       <LayoutDashboardIcon className="w-4 h-4 mr-2" />
-                      <Link href={`/${user.role}/admin`}>Dashboard</Link>
+                      <Link href={`/${user.role}/admin-analytics`}>Dashboard</Link>
                     </div>
                   ) : (
                     <div className="flex items-center">

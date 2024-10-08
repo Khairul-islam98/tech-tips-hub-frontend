@@ -33,8 +33,8 @@ const Sidebar = () => {
 
   const adminRoutes = [
     {
-      name: "Admin",
-      path: "/admin/admin",
+      name: "Admin Analytics",
+      path: "/admin/admin-analytics",
     },
     {
       name: "Manage Posts",
