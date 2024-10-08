@@ -8,7 +8,7 @@ import Loader from "@/components/loader";
 import { motion } from "framer-motion";
 
 const ManagePosts = () => {
-    const { data, refetch, isLoading } = useGetAllPosts();
+    const { data, refetch, isLoading } = useGetAllPosts({ searchTerm: "", category: "", sort: "" });
     const allPost = data?.data;
 
     if (isLoading) return <Loader />;

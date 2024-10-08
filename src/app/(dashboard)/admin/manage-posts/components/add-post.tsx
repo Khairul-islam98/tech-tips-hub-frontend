@@ -126,9 +126,9 @@ export const AddPost = ({refetch}: AddAdminProps) => {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}> 
+        <Button onClick={() => setIsOpen(true)} className="mb-2 mt-2 cursor-pointer  text-white  h-[50px]  font-bold text-2xl"> 
+          <Edit size={20} className="mr-2" />
           Add Post
-          <Edit size={16} />
         </Button>
       </DialogTrigger>
         {/* @ts-ignore */}
