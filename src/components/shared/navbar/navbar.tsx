@@ -29,20 +29,26 @@ import {
   LayoutDashboardIcon,
   Plus,
   BadgeDollarSign,
+  Bell,
 } from "lucide-react";
 import { Cross as Hamburger } from "hamburger-react";
 import { useUser } from "@/context/user-provider";
 import { logoutUser } from "@/services/auth-services";
+
 import logo from "../../../../public/assets/images/logo.png";
 import Image from "next/image";
 import { protectedRoutes } from "@/utils/constant";
 import PostModal from "@/components/post-modal";
+import { useNotifications } from "@/context/notification-provider";
+import { NotificationDialog } from "@/components/notification-dialog";
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user, setIsLoading } = useUser();
+  const { notifications, clearNotification } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -97,7 +103,6 @@ const Navbar = () => {
                 />
               </Button>
             </SheetTrigger>
-              {/* @ts-ignore */}
             <SheetContent className="flex flex-col justify-between items-center">
               <SheetHeader className="w-full">
                 <SheetTitle className="text-xl mb-4">Menu</SheetTitle>
@@ -120,7 +125,7 @@ const Navbar = () => {
                 {user?.email && (
                   <Button
                     onClick={() => setPostModalOpen(true)}
-                    className="bg-transparent rounded-full hover:bg-black/40  text-black"
+                    className="bg-transparent rounded-full hover:bg-black/40 text-black"
                   >
                     <Plus className="w-6 h-6 mr-1" /> Create Post
                   </Button>
@@ -206,15 +211,36 @@ const Navbar = () => {
           {user?.email && (
             <Button
               onClick={() => setPostModalOpen(true)}
-              className="bg-transparent rounded-full hover:bg-black/40  text-white"
+              className="bg-transparent rounded-full hover:bg-black/40 text-white"
             >
               <Plus className="w-6 h-6 mr-1" /> Create Post
             </Button>
           )}
         </div>
 
-        {/* Login/Avatar section for large screens */}
-        <div className="hidden md:flex items-center ml-auto">
+        {/* Notifications and Avatar section for large screens */}
+        <div className="hidden md:flex items-center ml-auto gap-4">
+          {/* Notifications Bell Icon */}
+          <Button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className="bg-transparent hover:bg-transparent relative"
+          >
+            <Bell className="text-white w-6 h-6" />
+            {notifications.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {notifications.length}
+              </span>
+            )}
+          </Button>
+
+          <NotificationDialog
+            isOpen={showNotifications}
+            onClose={() => setShowNotifications(false)}
+            notifications={notifications}
+            clearNotification={clearNotification}
+          />
+
+          {/* Login/Avatar section */}
           {!user?.email ? (
             <Link href="/login">
               <Button className="bg-[#FEA633] text-white font-bold text-2xl px-3">
@@ -234,7 +260,7 @@ const Navbar = () => {
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <User className="w-4 h-4 mr-2" />
-                  <Link href="/profile">Profile</Link>
+                  <Link href={"/profile"}>Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   {user.role === "admin" ? (

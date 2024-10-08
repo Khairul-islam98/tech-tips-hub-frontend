@@ -61,8 +61,8 @@ const Sidebar = () => {
       path: "/user/user",
     },
     {
-      name: "Booking Management",
-      path: "/user/booking-management",
+      name: "My Posts",
+      path: "/user/my-posts",
     },
     {
       name: "Payment Management",
