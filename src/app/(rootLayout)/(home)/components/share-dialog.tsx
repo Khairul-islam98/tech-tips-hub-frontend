@@ -15,7 +15,6 @@ import {
     DialogTrigger,
     DialogClose,
   } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 interface ShareDialogProps {
   post: {
@@ -24,7 +23,7 @@ interface ShareDialogProps {
     content: string;
   };
   openSharePostId: string | null;
-  toggleShareOptions: (id: string) => void;
+  toggleShareOptions: (id: string | null) => void;
 }
 
 export const ShareDialog = ({ post, openSharePostId, toggleShareOptions }: ShareDialogProps) => {
@@ -32,7 +31,7 @@ export const ShareDialog = ({ post, openSharePostId, toggleShareOptions }: Share
         <div className="relative">
         <Dialog
           open={openSharePostId === post._id}
-          onOpenChange={() => toggleShareOptions(post._id)}
+          onOpenChange={() => toggleShareOptions(openSharePostId === post?._id ? null : post?._id)}
         >
           <DialogTrigger asChild>
             <button
@@ -99,7 +98,7 @@ export const ShareDialog = ({ post, openSharePostId, toggleShareOptions }: Share
 
             {/* Dialog Close Button */}
             <DialogClose asChild>
-              <Button className="btn-close mt-4">Close</Button>
+            
             </DialogClose>
           </DialogContent>
         </Dialog>
