@@ -83,8 +83,7 @@ export const PostFilter = ({
           value={localSearchTerm}
           onChange={(e) => setLocalSearchTerm(e.target.value)}
           className="p-2 border rounded w-full"
-          whileFocus={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
+         
         />
         <Button onClick={handleSearchSubmit} className="bg-blue-500 h-10 text-white">
           Search

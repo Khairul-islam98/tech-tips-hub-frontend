@@ -41,10 +41,12 @@ import { protectedRoutes } from "@/utils/constant";
 import PostModal from "@/components/post-modal";
 import { useNotifications } from "@/context/notification-provider";
 import { NotificationDialog } from "@/components/notification-dialog";
+import { useGetMyProfile } from "@/hooks/user-hook";
 
 const Navbar = () => {
   const pathname = usePathname();
   const { user, setIsLoading } = useUser();
+  const { data: userData, refetch } = useGetMyProfile(user?.email);
   const { notifications, clearNotification } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const [isPostModalOpen, setPostModalOpen] = useState(false);
@@ -146,7 +148,7 @@ const Navbar = () => {
                     >
                       <Avatar className="cursor-pointer rounded-md size-10 hover:opacity-75 transition mx-auto">
                         <AvatarImage
-                          src={user?.profilePhoto}
+                          src={userData?.data?.profilePhoto}
                           alt="User Avatar"
                         />
                         <AvatarFallback className="bg-sky-500 text-white rounded-md">
@@ -251,7 +253,7 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none relative" asChild>
                 <Avatar className="cursor-pointer rounded-md size-10 hover:opacity-75 transition mx-auto">
-                  <AvatarImage src={user?.profilePhoto} alt="User Avatar" />
+                  <AvatarImage src={userData?.data?.profilePhoto} alt="User Avatar" />
                   <AvatarFallback className="bg-sky-500 text-white rounded-md">
                     {avatarFallback}
                   </AvatarFallback>
