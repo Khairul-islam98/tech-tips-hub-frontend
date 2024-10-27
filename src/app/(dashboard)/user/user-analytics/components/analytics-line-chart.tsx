@@ -28,7 +28,7 @@ export const AnalyticsLineChart = ({title, header, postData, label}: AnalyticsLi
         },
     } satisfies ChartConfig;
     return (
-        <Card className="h-[450px] w-[90%] border md:w-[80%] rounded-lg shadow-lg overflow-hidden">
+        <Card className="h-[450px] border rounded-lg shadow-lg overflow-hidden">
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 <CardDescription>

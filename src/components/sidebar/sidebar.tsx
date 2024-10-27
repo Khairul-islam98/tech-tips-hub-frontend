@@ -91,7 +91,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="w-[300px] px-4 py-8 border-r h-[100vh] hidden lg:block fixed top-0 left-0  bg-white shadow-lg dark:bg-gray-900">
+      <div className="w-[200px] px-4 py-8 border-r h-[100%]  hidden lg:block   bg-white shadow-lg dark:bg-gray-900">
         {/* Logo */}
         <div className="max-w-[160px] pb-4 text-center mx-auto border-b ">
           <h1 className="mb-4 text-gray-600 dark:text-white">
@@ -160,7 +160,7 @@ const Sidebar = () => {
       </div>
 
       {/* Mobile Sidebar (Sheet) */}
-      <div className="flex items-center justify-between h-20 bg-gray-50 px-3 lg:hidden shadow-sm">
+      <div className="flex items-center justify-between h-20  px-3 lg:hidden shadow-sm">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
           <Button className="text-xl font-medium bg-transparent hover:bg-transparent p-0">

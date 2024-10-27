@@ -6,7 +6,7 @@ import MemberChart from './components/member-chart';
 
 const AdminAnalytics = () => {
     return (
-        <div>
+        <div className="container mx-auto p-4 sm:p-6 lg:p-8">
             <AnalyticsCard />
 
             <div className='flex items-center mt-10 gap-5 flex-col lg:flex-row'>
