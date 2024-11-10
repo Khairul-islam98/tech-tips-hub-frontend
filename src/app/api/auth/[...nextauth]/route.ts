@@ -19,10 +19,10 @@ const handler = NextAuth({
         }
         if (account?.provider === "google") {
           console.log("Profile:", profile);
-          const { data } = await axiosInstance.post("/auth/login", {
+          const { data } = await axiosInstance.post("/auth/social", {
             name: profile.name,
             email: profile.email,
-            profilePhoto: profile.image,
+            profilePhoto: profile.picture,
           });
           console.log("API Response:", data);
           if (data?.data?.accessToken) {

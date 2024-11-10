@@ -28,6 +28,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import React, { Suspense } from "react";
 import Loader from "@/components/loader";
+import { signIn } from "next-auth/react";
 
 const LoginPageContent = () => {
   const [error, setError] = useState("");
@@ -154,7 +155,9 @@ const LoginPageContent = () => {
 
             <div className="flex flex-col gap-y-2.5">
               <Button
-                onClick={() => {}}
+                onClick={() => {
+                  signIn("google",);
+                }}
                 variant="outline"
                 size="lg"
                 className="w-full relative"
